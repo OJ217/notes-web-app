@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+
+@theme {
+	--color-neutral-950: #0e121b;
+	--color-neutral-900: #191b25;
+	--color-neutral-800: #232530;
+	--color-neutral-700: #2b303b;
+	--color-neutral-600: #525866;
+	--color-neutral-500: #717784;
+	--color-neutral-400: #99a0ae;
+	--color-neutral-300: #cacfd8;
+	--color-neutral-200: #e0e4ea;
+	--color-neutral-100: #f3f5f8;
+	--color-neutral-50: #f5f7fa;
+	--color-blue-700: #2547d0;
+	--color-blue-500: #335cff;
+	--color-blue-50: #ebf1ff;
+	--color-green-500: #21c16b;
+	--color-green-100: #d1fbe9;
+	--color-red-500: #fb3748;
+	--color-red-100: #ffd5d8;
+
+	--animate-spinner: spinner 1s cubic-bezier(0.2, 0, 0.2, 1) infinite;
+	--animate-caret-blink: caret-blink 1.25s ease-out infinite;
+
+	@keyframes spinner {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	@keyframes caret-blink {
+		0%,
+		70%,
+		100% {
+			opacity: 1;
+		}
+		20%,
+		50% {
+			opacity: 0;
+		}
+	}
+}
+
+body {
+	@apply bg-neutral-100 font-[Inter] text-neutral-950 select-none;
+}
