@@ -15,6 +15,7 @@ import CreateNoteView from '@/views/notes/create-note';
 import { Toaster } from '@/components/ui/toast';
 import AuthLayout from '@/components/layout/auth-layout';
 import MainLayout from '@/components/layout/main-layout';
+import EditNoteView from '@/views/notes/edit-note';
 
 export default function App() {
 	return (
@@ -32,6 +33,7 @@ export default function App() {
 					<Route element={<MainLayout />}>
 						<Route path='/notes' element={<NotesView />} />
 						<Route path='/notes/new' element={<CreateNoteView />} />
+						<Route path='/notes/:id' element={<EditNoteView />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>

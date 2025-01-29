@@ -10,17 +10,18 @@ import { useNotesQuery } from '@/services/note-service';
 
 export default function NotesView() {
 	return (
-		<div className='h-full space-y-4'>
-			<h1 className='text-2xl font-bold'>All Notes</h1>
+		<React.Fragment>
+			<div className='space-y-4'>
+				<h1 className='text-2xl font-bold'>All Notes</h1>
 
-			<NotesList />
-
-			<Button asChild className='fixed right-4 bottom-[73px] size-12 rounded-full shadow-2xl md:bottom-[101px] md:size-16'>
+				<NotesList />
+			</div>
+			<Button asChild className='fixed right-4 bottom-[73px] size-12 rounded-full ring-offset-transparent md:bottom-[101px] md:size-16'>
 				<Link to={'/notes/new'}>
 					<IconPlus className='size-8' />
 				</Link>
 			</Button>
-		</div>
+		</React.Fragment>
 	);
 }
 
@@ -40,7 +41,7 @@ function NotesList() {
 	}
 
 	return (
-		<div className='space-y-2.5'>
+		<div className='h-full space-y-2.5'>
 			{notes.map((note, index) => (
 				<React.Fragment key={note.id}>
 					<NoteCard {...note} />

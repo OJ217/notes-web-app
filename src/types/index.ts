@@ -8,6 +8,9 @@ export type ApiResponse<T extends object> = BaseApiReponse & {
 	data: T;
 };
 
+export type ResourceUpdatedResponse = ApiResponse<{ updated: true }>;
+export type ResourceDeletedResponse = ApiResponse<{ deleted: true }>;
+
 export type ApiErrorRespose = BaseApiReponse & {
 	error: {
 		message: string;
