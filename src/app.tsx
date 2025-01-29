@@ -4,10 +4,13 @@ import queryClient from '@/config/query-client';
 import { QueryClientProvider } from '@tanstack/react-query';
 
 import RootView from '@/views/root/root';
+
 import LogInView from '@/views/auth/log-in';
 import SignUpView from '@/views/auth/sign-up';
-import NotesView from '@/views/notes/notes';
 import VerifyEmailView from '@/views/auth/verify-email';
+
+import NotesView from '@/views/notes/notes';
+import CreateNoteView from '@/views/notes/create-note';
 
 import { Toaster } from '@/components/ui/toast';
 import AuthLayout from '@/components/layout/auth-layout';
@@ -28,6 +31,7 @@ export default function App() {
 
 					<Route element={<MainLayout />}>
 						<Route path='/notes' element={<NotesView />} />
+						<Route path='/notes/new' element={<CreateNoteView />} />
 					</Route>
 				</Routes>
 			</BrowserRouter>

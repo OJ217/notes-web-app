@@ -14,7 +14,7 @@ const buttonVariants = cva(
 				destructive: 'bg-red-500 text-destructive-foreground shadow-sm hover:bg-destructive/90',
 				outline: 'border border-neutral-300 bg-white shadow-sm hover:bg-neutral-100 focus-visible:ring-neutral-200 focus-visible:bg-neutral-100',
 				secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
-				ghost: 'bg-transparent',
+				ghost: 'bg-transparent border-none rounded focus-visible:ring-neutral-300',
 				icon: 'bg-transparent focus-visible:ring-neutral-300 rounded-md',
 				link: 'text-primary underline-offset-4 hover:underline',
 			},
@@ -29,6 +29,12 @@ const buttonVariants = cva(
 			variant: 'default',
 			size: 'default',
 		},
+		compoundVariants: [
+			{
+				variant: 'ghost',
+				className: 'h-auto p-0 ring-offset-1',
+			},
+		],
 	},
 );
 
@@ -49,8 +55,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(({ className, va
 			disabled={disabled || loading}
 			{...props}
 		>
-			{loading && <IconSpinner className='animate-spinner size-4' />}
-			{props.children}
+			{loading ? <IconSpinner className='animate-spinner size-4' /> : props.children}
 		</Comp>
 	);
 });

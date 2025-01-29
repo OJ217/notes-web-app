@@ -1,25 +1,38 @@
 export enum ErrorCodes {}
 
-export interface BaseApiReponse {
+export type BaseApiReponse = {
 	success: boolean;
-}
+};
 
-export interface ApiResponse<T extends object> extends BaseApiReponse {
+export type ApiResponse<T extends object> = BaseApiReponse & {
 	data: T;
-}
+};
 
-export interface ApiErrorRespose extends BaseApiReponse {
+export type ApiErrorRespose = BaseApiReponse & {
 	error: {
 		message: string;
 		description?: string;
 		code: ErrorCodes;
 	};
-}
+};
 
-export interface AuthResponse {
+export type AuthResponse = {
 	token: string;
 	user: { id: string; email: string; createdAt: string };
-}
+};
+
+type NoteStatus = 'active' | 'archived';
+
+export type Note = {
+	id: string;
+	title: string;
+	content: string;
+	tags: string[];
+	authorId: string;
+	status: NoteStatus;
+	createdAt: string;
+	updatedAt: string;
+};
 
 export enum ColorTheme {
 	Dark = 'dark',
@@ -31,3 +44,5 @@ export enum FontTheme {
 	SansSerif = 'sans-serif',
 	Monospace = 'monospace',
 }
+
+export type IconComponent = (props: React.ComponentProps<'svg'>) => React.ReactNode;

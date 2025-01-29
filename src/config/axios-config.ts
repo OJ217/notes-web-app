@@ -38,7 +38,7 @@ axios.interceptors.request.use(
 				controller.abort('ERR_CANCELLED');
 			}
 
-			config.headers.Authorization = `Bearers ${token}`;
+			config.headers.Authorization = `Bearer ${token}`;
 			config.url = `/api${config.url}`;
 		}
 
@@ -68,7 +68,7 @@ axios.interceptors.response.use(
 				const errorObj = (errorResponse.response?.data as ApiErrorRespose).error;
 
 				if (errorObj.message) {
-					toast(errorObj.message, { description: errorObj.description });
+					toast.error(errorObj.message, { description: errorObj.description });
 				}
 			} else {
 				toast('Internal error');
