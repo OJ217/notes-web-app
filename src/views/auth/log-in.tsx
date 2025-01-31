@@ -1,6 +1,5 @@
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router';
-import { z } from 'zod';
 
 import AuthCard from '@/components/features/auth-card';
 import { IconGoogle } from '@/components/icons';
@@ -9,18 +8,12 @@ import Divider from '@/components/ui/divider';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input, PasswordInput } from '@/components/ui/input';
 import { signInWithGoogle, useLogInMutation } from '@/services/auth-service';
+import { AuthFormValues, authFormSchema } from '@/services/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-const loginFormSchema = z.object({
-	email: z.string().email({ message: 'Please enter a valid email' }),
-	password: z.string().min(1, { message: 'Please enter your password' }),
-});
-
-type LoginFormValues = z.infer<typeof loginFormSchema>;
-
 export default function LogInView() {
-	const loginForm = useForm<LoginFormValues>({
-		resolver: zodResolver(loginFormSchema),
+	const loginForm = useForm<AuthFormValues>({
+		resolver: zodResolver(authFormSchema),
 		defaultValues: {
 			email: '',
 			password: '',
@@ -30,7 +23,7 @@ export default function LogInView() {
 
 	const { logIn, logInPending } = useLogInMutation();
 
-	function handleLogInFormSubmit(credentials: LoginFormValues) {
+	function handleLogInFormSubmit(credentials: AuthFormValues) {
 		void logIn(credentials);
 	}
 

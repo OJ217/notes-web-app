@@ -41,7 +41,7 @@ function NotesList() {
 		return <div>Error has occured</div>;
 	}
 
-	if (archivesPagination.pages.length === 0) {
+	if (archivesPagination.pages.length === 0 || archivesPagination.pages[0].docs.length === 0) {
 		return (
 			<EmptyStateCard>
 				<React.Fragment>

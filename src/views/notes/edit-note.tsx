@@ -5,7 +5,8 @@ import { toast } from 'sonner';
 
 import NoteArchiver from '@/components/features/note-archiver';
 import NoteDeleter from '@/components/features/note-deleter';
-import { IconArrowLeft, IconCircleClock, IconTag } from '@/components/icons';
+import { IconCircleClock, IconTag } from '@/components/icons';
+import BackButton from '@/components/misc/back-button';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 import { Form, FormField } from '@/components/ui/form';
@@ -13,7 +14,7 @@ import { Input } from '@/components/ui/input';
 import { useNavigateBack, useNotifyErrors } from '@/hooks';
 import { formatDate } from '@/lib/utils';
 import { useNoteQuery, useUpdateNoteMutation } from '@/services/note-service';
-import { MutateNoteData, MutateNoteFormInput, mutateNoteSchema } from '@/services/schema';
+import { MutateNoteFormData, MutateNoteFormInput, mutateNoteSchema } from '@/services/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function EditNoteView() {
@@ -25,7 +26,7 @@ export default function EditNoteView() {
 
 	const [editFormReset, setEditFormReset] = useState<boolean>(false);
 
-	const editNoteForm = useForm<MutateNoteFormInput, unknown, MutateNoteData>({
+	const editNoteForm = useForm<MutateNoteFormInput, unknown, MutateNoteFormData>({
 		resolver: zodResolver(mutateNoteSchema),
 		defaultValues: {
 			title: '',
@@ -51,7 +52,7 @@ export default function EditNoteView() {
 
 	const { mutateAsync: updateNote, isPending: updateNotePending } = useUpdateNoteMutation();
 
-	const handleEditNoteFormSubmit = async (noteData: MutateNoteData) => {
+	const handleEditNoteFormSubmit = async (noteData: MutateNoteFormData) => {
 		toast.promise(async () => await updateNote({ noteId, note: noteData }), {
 			loading: 'Saving note',
 			success: 'Note has been saved',
@@ -71,10 +72,8 @@ export default function EditNoteView() {
 			<Form {...editNoteForm}>
 				<form className='flex h-full flex-col gap-3' onSubmit={editNoteForm.handleSubmit(handleEditNoteFormSubmit)}>
 					<div className='flex h-5 items-center justify-between gap-4 text-xs md:text-sm'>
-						<Button type='button' onClick={navigateBack} disabled={updateNotePending} className='text-neutral-600 hover:text-neutral-950' variant={'ghost'}>
-							<IconArrowLeft className='size-4' />
-							<span>Go Back</span>
-						</Button>
+						<BackButton />
+
 						<div className='flex items-center gap-4'>
 							<NoteDeleter noteId={noteId} triggerDisabled={updateNotePending} />
 
@@ -83,6 +82,7 @@ export default function EditNoteView() {
 							<Button type='button' onClick={navigateBack} disabled={updateNotePending} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
 								<span className='text-xs md:text-sm'>Cancel</span>
 							</Button>
+
 							<Button
 								type='submit'
 								disabled={!editNoteForm.formState.isDirty || updateNotePending}

@@ -1,14 +1,15 @@
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { IconArrowLeft, IconCircleClock, IconTag } from '@/components/icons';
+import { IconCircleClock, IconTag } from '@/components/icons';
+import BackButton from '@/components/misc/back-button';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 import { Form, FormField } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { useNavigateBack, useNotifyErrors } from '@/hooks';
 import { useCreateNoteMutation } from '@/services/note-service';
-import { MutateNoteFormInput, MutateNoteData, mutateNoteSchema } from '@/services/schema';
+import { MutateNoteFormData, MutateNoteFormInput, mutateNoteSchema } from '@/services/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function CreateNoteView() {
@@ -16,7 +17,7 @@ export default function CreateNoteView() {
 	const navigateBack = useNavigateBack();
 
 	// Form hooks
-	const createNoteForm = useForm<MutateNoteFormInput, unknown, MutateNoteData>({
+	const createNoteForm = useForm<MutateNoteFormInput, unknown, MutateNoteFormData>({
 		defaultValues: {
 			title: '',
 			content: '',
@@ -30,7 +31,7 @@ export default function CreateNoteView() {
 	// Service handler
 	const { mutateAsync: createNote, isPending } = useCreateNoteMutation();
 
-	const handleCreateNoteFormSubmit = async (noteData: MutateNoteData) => {
+	const handleCreateNoteFormSubmit = async (noteData: MutateNoteFormData) => {
 		toast.promise(async () => await createNote(noteData), {
 			loading: 'Saving note',
 			success: 'Note has been saved',
@@ -41,10 +42,8 @@ export default function CreateNoteView() {
 		<Form {...createNoteForm}>
 			<form className='flex h-full flex-col gap-3' onSubmit={createNoteForm.handleSubmit(handleCreateNoteFormSubmit)}>
 				<div className='flex h-5 items-center justify-between gap-4 text-xs md:text-sm'>
-					<Button type='button' disabled={isPending} onClick={navigateBack} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
-						<IconArrowLeft className='size-4' />
-						<span>Go Back</span>
-					</Button>
+					<BackButton type='button' disabled={isPending} />
+
 					<div className='flex items-center gap-4'>
 						<Button type='button' disabled={isPending} onClick={navigateBack} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
 							<span>Cancel</span>

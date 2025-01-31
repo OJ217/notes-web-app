@@ -2,13 +2,13 @@ import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
-import { MutateNoteData } from '@/services/schema';
+import { MutateNoteFormData } from '@/services/schema';
 import { ApiResponse, Note, NoteListItem, NoteStatus, PaginatedResponse, ResourceDeletedResponse, ResourceUpdatedResponse } from '@/types';
 import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 type NotesPaginationCache = InfiniteData<PaginatedResponse<NoteListItem>>;
 
-const fetchNotes = async (params?: Partial<{ cursor: string; status: NoteStatus; search: string }>) => {
+const fetchNotes = async (params?: Partial<{ cursor: string; status: NoteStatus; tag: string; search: string }>) => {
 	return (
 		await axios.get<ApiResponse<PaginatedResponse<NoteListItem>>>('/notes', {
 			withAuthorization: true,
@@ -43,15 +43,24 @@ export const useArchivesQuery = () => {
 	});
 };
 
+export const useTaggedNotesQuery = (tag: string) => {
+	return useQuery({
+		queryKey: ['notes.tagged', tag],
+		queryFn: async () => {
+			return (await fetchNotes({ tag, status: 'active' })).docs;
+		},
+	});
+};
+
 export const useNotesSearchQuery = (search?: string) => {
 	return useInfiniteQuery({
-		queryKey: ['notes', { search }],
+		queryKey: ['notes.search', search],
 		queryFn: async ({ pageParam }) => {
-			return await fetchNotes({ cursor: pageParam, search });
+			return await fetchNotes({ cursor: pageParam, search, status: 'active' });
 		},
 		initialPageParam: undefined,
 		getNextPageParam,
-		enabled: search !== undefined || search !== null,
+		enabled: search?.trim() !== '' && search !== undefined && search !== null,
 	});
 };
 
@@ -62,14 +71,14 @@ export const useNoteQuery = ({ noteId }: { noteId: string }) => {
 
 	const noteQuery = useQuery({
 		queryFn: fetchNote,
-		queryKey: ['notes', noteId],
+		queryKey: ['note', noteId],
 	});
 
 	return noteQuery;
 };
 
 export const useCreateNoteMutation = () => {
-	const createNote = async (note: MutateNoteData) => {
+	const createNote = async (note: MutateNoteFormData) => {
 		return (
 			await axios.post<ApiResponse<Note>>('/notes', note, {
 				withAuthorization: true,
@@ -90,7 +99,7 @@ export const useCreateNoteMutation = () => {
 				}
 			});
 
-			queryClient.setQueryData(['notes', newNote.id], newNote);
+			queryClient.setQueryData(['note', newNote.id], newNote);
 
 			navigate(`/notes/${newNote.id}`);
 		},
@@ -98,7 +107,7 @@ export const useCreateNoteMutation = () => {
 };
 
 export const useUpdateNoteMutation = () => {
-	const updateNote = async ({ noteId, note }: { noteId: string; note: MutateNoteData }) => {
+	const updateNote = async ({ noteId, note }: { noteId: string; note: MutateNoteFormData }) => {
 		return (
 			await axios.patch<ApiResponse<Note>>(`/notes/${noteId}`, note, {
 				withAuthorization: true,
@@ -111,7 +120,7 @@ export const useUpdateNoteMutation = () => {
 	return useMutation({
 		mutationFn: updateNote,
 		onSuccess: (updatedNote, variables) => {
-			queryClient.setQueryData(['notes', variables.noteId], updatedNote);
+			queryClient.setQueryData(['note', variables.noteId], updatedNote);
 
 			queryClient.setQueryData(['notes'], (notesPagination?: NotesPaginationCache): NotesPaginationCache | undefined => {
 				if (notesPagination !== undefined) {
@@ -124,6 +133,9 @@ export const useUpdateNoteMutation = () => {
 					};
 				}
 			});
+
+			queryClient.invalidateQueries({ queryKey: ['notes.tagged'] });
+			queryClient.invalidateQueries({ queryKey: ['notes.search'] });
 		},
 	});
 };
@@ -158,7 +170,7 @@ export const useArchiveNoteMutation = () => {
 					}
 				});
 
-				queryClient.setQueryData(['notes', noteId], (note?: Note): Note | undefined => {
+				queryClient.setQueryData(['note', noteId], (note?: Note): Note | undefined => {
 					if (note !== undefined) {
 						return {
 							...note,
@@ -166,6 +178,9 @@ export const useArchiveNoteMutation = () => {
 						};
 					}
 				});
+
+				queryClient.invalidateQueries({ queryKey: ['notes.tagged'] });
+				queryClient.invalidateQueries({ queryKey: ['notes.search'] });
 
 				toast.success('Note has been archived');
 
@@ -205,7 +220,7 @@ export const useRestoreNoteMutation = () => {
 					}
 				});
 
-				queryClient.setQueryData(['notes', noteId], (note?: Note): Note | undefined => {
+				queryClient.setQueryData(['note', noteId], (note?: Note): Note | undefined => {
 					if (note !== undefined) {
 						return {
 							...note,
@@ -213,6 +228,9 @@ export const useRestoreNoteMutation = () => {
 						};
 					}
 				});
+
+				queryClient.invalidateQueries({ queryKey: ['notes.tagged'] });
+				queryClient.invalidateQueries({ queryKey: ['notes.search'] });
 
 				toast.success('Note has been restored');
 
@@ -240,7 +258,7 @@ export const useDeleteNoteMutation = () => {
 			if (deleteResponse.deleted) {
 				let queryKey: string;
 
-				queryClient.setQueryData(['notes', noteId], (note?: Note) => {
+				queryClient.setQueryData(['note', noteId], (note?: Note) => {
 					if (note !== undefined) {
 						queryKey = note.status === 'active' ? 'notes' : 'archives';
 					}
@@ -259,6 +277,9 @@ export const useDeleteNoteMutation = () => {
 						};
 					}
 				});
+
+				queryClient.invalidateQueries({ queryKey: ['notes.tagged'] });
+				queryClient.invalidateQueries({ queryKey: ['notes.search'] });
 
 				toast.success('Note has been deleted');
 

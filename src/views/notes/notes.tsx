@@ -40,7 +40,7 @@ function NotesList() {
 		return <div>Error has occured</div>;
 	}
 
-	if (notesPagination.pages.length === 0) {
+	if (notesPagination.pages.length === 0 || notesPagination.pages[0].docs.length === 0) {
 		return <EmptyStateCard>You don’t have any notes yet. Start a new note to capture your thoughts and ideas.</EmptyStateCard>;
 	}
 

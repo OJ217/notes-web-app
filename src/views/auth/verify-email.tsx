@@ -1,22 +1,15 @@
 import { REGEXP_ONLY_DIGITS } from 'input-otp';
 import { useForm } from 'react-hook-form';
 import { Navigate } from 'react-router';
-import { z } from 'zod';
 
 import AuthCard from '@/components/features/auth-card';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { InputOTP, InputOTPSlot } from '@/components/ui/input-otp';
 import { useVerifyEmailMutation } from '@/services/auth-service';
+import { verifyEmailFormSchema, VerifyEmailFormValues } from '@/services/schema';
 import useVerificationStore from '@/stores/verification-store';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-const verifyEmailFormSchema = z.object({
-	verificationToken: z.string().min(1),
-	otp: z.coerce.string().length(6, { message: 'Please enter valid otp' }),
-});
-
-type VerifyEmailFormValues = z.infer<typeof verifyEmailFormSchema>;
 
 export default function VerifyEmailView() {
 	const verifyEmailForm = useForm<VerifyEmailFormValues>({

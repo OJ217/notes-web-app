@@ -16,6 +16,11 @@ import EditNoteView from '@/views/notes/edit-note';
 import ArchivesView from '@/views/archives/archives';
 import EditArchiveView from '@/views/archives/edit-archive';
 
+import TagsView from '@/views/tags/tags';
+import TagView from '@/views/tags/tag';
+
+import SearchView from '@/views/search/search';
+
 import SettingsView from '@/views/settings/settings';
 import ColorThemeView from '@/views/settings/color-theme';
 import FontThemeView from '@/views/settings/font-theme';
@@ -52,6 +57,13 @@ export default function App() {
 								<Route index element={<ArchivesView />} />
 								<Route path=':id' element={<EditArchiveView />} />
 							</Route>
+
+							<Route path='tags'>
+								<Route index element={<TagsView />} />
+								<Route path=':tag' element={<TagView />} />
+							</Route>
+
+							<Route path='search' element={<SearchView />} />
 
 							<Route path='settings'>
 								<Route index element={<SettingsView />} />

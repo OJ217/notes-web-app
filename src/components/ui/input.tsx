@@ -4,6 +4,7 @@ import { IconHide, IconShow } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { cva, VariantProps } from 'class-variance-authority';
+import { IconComponent } from '@/types';
 
 const inputVariants = cva('', {
 	variants: {
@@ -26,6 +27,30 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(({ className, type,
 	return <input type={type} className={cn(inputVariants({ variant }), className)} ref={ref} {...props} />;
 });
 Input.displayName = 'Input';
+
+const InputWithIcon = React.forwardRef<HTMLInputElement, InputProps & { icon: IconComponent }>(({ className, icon: IconComponent, ...props }, ref) => {
+	const [inputFocused, setInputFocused] = React.useState<boolean>(false);
+
+	return (
+		<div
+			className={cn(
+				'flex h-10 w-full items-center gap-3 rounded-lg border border-neutral-300 bg-neutral-50 px-4 text-sm shadow-sm ring-offset-3 transition-all duration-300 ease-in-out focus-within:outline-none not-focus-within:hover:bg-neutral-100 aria-disabled:cursor-not-allowed aria-disabled:bg-neutral-100 aria-disabled:opacity-50',
+				{ 'focus-within:border-neutral-400 focus-within:ring-[1.5px] focus-within:ring-neutral-200': inputFocused },
+				className,
+			)}
+		>
+			<IconComponent className='size-5 shrink-0 text-neutral-500' />
+			<input
+				ref={ref}
+				{...props}
+				onBlur={() => setInputFocused(false)}
+				onFocus={() => setInputFocused(true)}
+				className={cn(inputVariants({ variant: 'unstyled' }), 'h-full flex-grow text-sm')}
+			/>
+		</div>
+	);
+});
+InputWithIcon.displayName = 'InputWithIcon';
 
 const PasswordInput = React.forwardRef<HTMLInputElement, Exclude<InputProps, 'type'>>(({ className, ...props }, ref) => {
 	const [type, setType] = React.useState<'password' | 'text'>('password');
@@ -58,4 +83,4 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Exclude<InputProps, 'ty
 });
 PasswordInput.displayName = 'PasswordInput';
 
-export { Input, PasswordInput };
+export { Input, InputWithIcon, PasswordInput };

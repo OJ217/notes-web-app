@@ -23,7 +23,7 @@ export default function FontThemeView() {
 	return (
 		<div className='space-y-5'>
 			<div>
-				<BackButton to='/settings' />
+				<BackButton label='Settings' to='/settings' />
 
 				<div className='mt-3 space-y-1'>
 					<h1 className='text-2xl font-bold'>Font Theme</h1>

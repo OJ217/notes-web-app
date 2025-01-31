@@ -1,5 +1,19 @@
 import { z } from 'zod';
 
+export const authFormSchema = z.object({
+	email: z.string().email({ message: 'Please enter a valid email' }),
+	password: z.string().min(1, { message: 'Please enter your password' }),
+});
+
+export type AuthFormValues = z.infer<typeof authFormSchema>;
+
+export const verifyEmailFormSchema = z.object({
+	verificationToken: z.string().min(1),
+	otp: z.coerce.string().length(6, { message: 'Please enter valid otp' }),
+});
+
+export type VerifyEmailFormValues = z.infer<typeof verifyEmailFormSchema>;
+
 export const mutateNoteSchema = z.object({
 	title: z.string().min(1, { message: 'Please enter note title' }).max(128, { message: 'Title is too long' }),
 	content: z.string().min(1, { message: 'Please enter note content' }).max(10000, { message: 'Content is too long' }),
@@ -17,7 +31,7 @@ export const mutateNoteSchema = z.object({
 });
 
 export type MutateNoteFormInput = z.input<typeof mutateNoteSchema>;
-export type MutateNoteData = z.output<typeof mutateNoteSchema>;
+export type MutateNoteFormData = z.output<typeof mutateNoteSchema>;
 
 export const changePasswordSchema = z
 	.object({
@@ -27,4 +41,4 @@ export const changePasswordSchema = z
 	})
 	.refine(({ newPassword, confirmPassword }) => newPassword === confirmPassword, { message: 'Password confirmation does not match', path: ['confirmPassword'] });
 
-export type ChangePasswordData = z.infer<typeof changePasswordSchema>;
+export type ChangePasswordFormValues = z.infer<typeof changePasswordSchema>;

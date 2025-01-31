@@ -7,6 +7,7 @@ import useAuthStore from '@/stores/auth-store';
 import { ApiResponse, AuthResponse } from '@/types';
 import { useMutation } from '@tanstack/react-query';
 import useVerificationStore from '@/stores/verification-store';
+import { AuthFormValues } from '@/services/schema';
 
 export const signInWithGoogle = async () => {
 	try {
@@ -19,9 +20,9 @@ export const signInWithGoogle = async () => {
 };
 
 export const useLogInMutation = () => {
-	const logInWithCredentials = async (credentials: { email: string; password: string }) => {
+	const logInWithCredentials = async (loginData: AuthFormValues) => {
 		return (
-			await axios.post<ApiResponse<AuthResponse>>('/auth/log-in', credentials, {
+			await axios.post<ApiResponse<AuthResponse>>('/auth/log-in', loginData, {
 				checkUnauthorizedResponse: false,
 			})
 		).data.data;

@@ -5,12 +5,12 @@ import BackButton from '@/components/misc/back-button';
 import { Button } from '@/components/ui/button';
 import { Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { PasswordInput } from '@/components/ui/input';
-import { ChangePasswordData, changePasswordSchema } from '@/services/schema';
+import { ChangePasswordFormValues, changePasswordSchema } from '@/services/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useChangePasswordMutation } from '@/services/user-service';
 
 export default function ChangePasswordView() {
-	const changePasswordForm = useForm<ChangePasswordData>({
+	const changePasswordForm = useForm<ChangePasswordFormValues>({
 		defaultValues: {
 			oldPassword: '',
 			newPassword: '',
@@ -21,7 +21,7 @@ export default function ChangePasswordView() {
 
 	const { changePassword, changePasswordPending } = useChangePasswordMutation();
 
-	const handleChangePasswordFormSubmit = (changePasswordData: ChangePasswordData) => {
+	const handleChangePasswordFormSubmit = (changePasswordData: ChangePasswordFormValues) => {
 		void changePassword(changePasswordData);
 	};
 
@@ -29,7 +29,7 @@ export default function ChangePasswordView() {
 		<Form {...changePasswordForm}>
 			<form className='space-y-6' onSubmit={changePasswordForm.handleSubmit(handleChangePasswordFormSubmit)}>
 				<div className='space-y-3'>
-					<BackButton to={'/settings'} />
+					<BackButton label='Settings' to={'/settings'} />
 					<h1 className='text-2xl font-bold'>Change Password</h1>
 				</div>
 				<div className='space-y-4'>

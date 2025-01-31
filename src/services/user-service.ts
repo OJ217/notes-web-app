@@ -1,12 +1,12 @@
 import axios from 'axios';
-
-import { ChangePasswordData } from '@/services/schema';
-import { ResourceUpdatedResponse } from '@/types';
-import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 
+import { ChangePasswordFormValues } from '@/services/schema';
+import { ApiResponse, ResourceUpdatedResponse } from '@/types';
+import { useMutation, useQuery } from '@tanstack/react-query';
+
 export const useChangePasswordMutation = () => {
-	const changePassword = async (changePasswordData: ChangePasswordData) => {
+	const changePassword = async (changePasswordData: ChangePasswordFormValues) => {
 		return (
 			await axios.patch<ResourceUpdatedResponse>('/user/password', changePasswordData, {
 				withAuthorization: true,
@@ -27,4 +27,26 @@ export const useChangePasswordMutation = () => {
 		changePassword: changePasswordMutation.mutateAsync,
 		changePasswordPending: changePasswordMutation.isPending,
 	};
+};
+
+export const useUserTagsQuery = () => {
+	const fetchTags = async () => {
+		return (
+			await axios.get<
+				ApiResponse<
+					{
+						tag: string;
+						tag_count: number;
+					}[]
+				>
+			>('/user/tags', {
+				withAuthorization: true,
+			})
+		).data.data;
+	};
+
+	return useQuery({
+		queryKey: ['tags'],
+		queryFn: fetchTags,
+	});
 };

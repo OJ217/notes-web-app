@@ -3,7 +3,8 @@ import { toast } from 'sonner';
 
 import NoteDeleter from '@/components/features/note-deleter';
 import NoteRestorer from '@/components/features/note-restorer';
-import { IconArrowLeft, IconCircleClock, IconTag } from '@/components/icons';
+import { IconCircleClock, IconTag } from '@/components/icons';
+import BackButton from '@/components/misc/back-button';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 import { Input } from '@/components/ui/input';
@@ -14,7 +15,7 @@ import { useNoteQuery } from '@/services/note-service';
 export default function EditArchiveView() {
 	const params = useParams();
 	const noteId = params.id!;
-	const navigateBack = useNavigateBack({ fallback: '/archives' });
+	const navigateBack = useNavigateBack();
 
 	const { data: archivedNote, isPending, isSuccess } = useNoteQuery({ noteId: noteId! });
 
@@ -34,10 +35,8 @@ export default function EditArchiveView() {
 	return (
 		<form className='flex h-full flex-col gap-3'>
 			<div className='flex h-5 items-center justify-between gap-4 text-xs md:text-sm'>
-				<Button type='button' onClick={navigateBack} className='text-neutral-600 hover:text-neutral-950' variant={'ghost'}>
-					<IconArrowLeft className='size-4' />
-					<span>Go Back</span>
-				</Button>
+				<BackButton />
+
 				<div className='flex items-center gap-4'>
 					<NoteDeleter noteId={noteId} />
 
