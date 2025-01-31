@@ -5,7 +5,7 @@ import { z } from 'zod';
 import { IconGoogle, IconInfoCircle } from '@/components/icons';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input, PasswordInput } from '@/components/ui/input';
 import { signInWithGoogle, useSignUpMutation } from '@/services/auth-service';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -69,10 +69,10 @@ export default function SignUpView() {
 								{fieldState.error ? (
 									<FormMessage />
 								) : (
-									<div className='flex items-center gap-2 text-neutral-600'>
+									<FormDescription className='flex items-center gap-2 text-neutral-600'>
 										<IconInfoCircle className='size-4' />
 										<p className='text-xs'>At least 8 characters</p>
-									</div>
+									</FormDescription>
 								)}
 							</FormItem>
 						)}

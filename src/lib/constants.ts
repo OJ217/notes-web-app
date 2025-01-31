@@ -23,7 +23,7 @@ export const COLOR_THEME_OPTIONS: ThemeOption<ColorTheme>[] = [
 
 export const FONT_THEME_OPTIONS: ThemeOption<FontTheme>[] = [
 	{ label: 'Sans-serif ', description: 'Clean and modern, easy to read.', icon: IconSansSerif, value: FontTheme.SansSerif },
-	{ label: 'Seif', description: 'Classic and elegant for a timeless feel.', icon: IconSerif, value: FontTheme.Serif },
+	{ label: 'Serif', description: 'Classic and elegant for a timeless feel.', icon: IconSerif, value: FontTheme.Serif },
 	{ label: 'Monospace', description: 'Code-like, great for a technical vibe.', icon: IconMonospace, value: FontTheme.Monospace },
 ];
 

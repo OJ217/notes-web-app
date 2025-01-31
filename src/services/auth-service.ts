@@ -60,7 +60,9 @@ export const useSignUpMutation = () => {
 					verificationToken: string;
 					otpExpiration: string;
 				}>
-			>('/auth/sign-up', credentials)
+			>('/auth/sign-up', credentials, {
+				checkUnauthorizedResponse: false,
+			})
 		).data.data;
 	};
 

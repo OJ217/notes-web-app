@@ -19,6 +19,7 @@ import EditArchiveView from '@/views/archives/edit-archive';
 import SettingsView from '@/views/settings/settings';
 import ColorThemeView from '@/views/settings/color-theme';
 import FontThemeView from '@/views/settings/font-theme';
+import ChangePasswordView from '@/views/settings/change-password';
 
 import AuthLayout from '@/components/layout/auth-layout';
 import MainLayout from '@/components/layout/main-layout';
@@ -56,7 +57,7 @@ export default function App() {
 								<Route index element={<SettingsView />} />
 								<Route path='color-theme' element={<ColorThemeView />} />
 								<Route path='font-theme' element={<FontThemeView />} />
-								<Route path='change-password' element={<SettingsView />} />
+								<Route path='change-password' element={<ChangePasswordView />} />
 							</Route>
 						</Route>
 					</Routes>
