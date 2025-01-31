@@ -2,6 +2,8 @@
 @plugin "tailwindcss-animate";
 
 @theme {
+	--font-inter: Inter, sans-serif;
+
 	--color-neutral-950: #0e121b;
 	--color-neutral-900: #191b25;
 	--color-neutral-800: #232530;
@@ -23,6 +25,7 @@
 
 	--animate-spinner: spinner 1s cubic-bezier(0.2, 0, 0.2, 1) infinite;
 	--animate-caret-blink: caret-blink 1.25s ease-out infinite;
+	--animate-spin-bar: spin-bar 1.2s linear infinite;
 
 	@keyframes spinner {
 		to {
@@ -41,8 +44,17 @@
 			opacity: 0;
 		}
 	}
+
+	@keyframes spin-bar {
+		0% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0.15;
+		}
+	}
 }
 
 body {
-	@apply bg-neutral-100 font-[Inter] text-neutral-950 select-none;
+	@apply bg-neutral-100 text-neutral-950 select-none;
 }

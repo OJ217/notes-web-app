@@ -5,7 +5,12 @@ export const mutateNoteSchema = z.object({
 	content: z.string().min(1, { message: 'Please enter note content' }).max(10000, { message: 'Content is too long' }),
 	tags: z
 		.string()
-		.transform((tagString) => tagString.split(',').map((tag) => tag.trim()))
+		.transform((tagString) =>
+			tagString
+				.trim()
+				.split(',')
+				.map((tag) => tag.trim()),
+		)
 		.refine((tags) => tags.length <= 3, { message: 'Please enter up to 3 tags' })
 		.refine((tags) => tags.every((tag) => tag.length < 40), { message: 'Tag is too long' })
 		.optional(),

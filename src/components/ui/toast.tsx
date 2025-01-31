@@ -8,6 +8,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
 			theme={'light'}
 			className='toaster group'
 			position='top-right'
+			style={{ fontFamily: 'inherit' }}
 			toastOptions={{
 				classNames: {
 					toast: 'group toast group-[.toaster]:bg-background group-[.toaster]:text-foreground group-[.toaster]:border-border group-[.toaster]:shadow-lg',

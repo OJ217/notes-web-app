@@ -3,24 +3,56 @@ import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
 import { MutateNoteData } from '@/services/schema';
-import { ApiResponse, Note, ResourceDeletedResponse, ResourceUpdatedResponse } from '@/types';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { ApiResponse, Note, NoteListItem, NoteStatus, PaginatedResponse, ResourceDeletedResponse, ResourceUpdatedResponse } from '@/types';
+import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+
+type NotesPaginationCache = InfiniteData<PaginatedResponse<NoteListItem>>;
+
+const fetchNotes = async (params?: Partial<{ cursor: string; status: NoteStatus; search: string }>) => {
+	return (
+		await axios.get<ApiResponse<PaginatedResponse<NoteListItem>>>('/notes', {
+			withAuthorization: true,
+			params,
+		})
+	).data.data;
+};
+
+const getNextPageParam = (paginatedResponse: PaginatedResponse<NoteListItem>) => {
+	return paginatedResponse.meta.cursor;
+};
 
 export const useNotesQuery = () => {
-	const fetchNotes = async () => {
-		return (
-			await axios.get<ApiResponse<Note[]>>('/notes', {
-				withAuthorization: true,
-			})
-		).data.data;
-	};
-
-	const notesQuery = useQuery({
-		queryFn: fetchNotes,
+	return useInfiniteQuery({
 		queryKey: ['notes'],
+		queryFn: async ({ pageParam }) => {
+			return await fetchNotes({ cursor: pageParam, status: 'active' });
+		},
+		initialPageParam: undefined,
+		getNextPageParam,
 	});
+};
 
-	return notesQuery;
+export const useArchivesQuery = () => {
+	return useInfiniteQuery({
+		queryKey: ['archives'],
+		queryFn: async ({ pageParam }) => {
+			return await fetchNotes({ cursor: pageParam, status: 'archived' });
+		},
+		initialPageParam: undefined,
+		getNextPageParam,
+	});
+};
+
+export const useNotesSearchQuery = (search?: string) => {
+	return useInfiniteQuery({
+		queryKey: ['notes', { search }],
+		queryFn: async ({ pageParam }) => {
+			return await fetchNotes({ cursor: pageParam, search });
+		},
+		initialPageParam: undefined,
+		getNextPageParam,
+		enabled: search !== undefined || search !== null,
+	});
 };
 
 export const useNoteQuery = ({ noteId }: { noteId: string }) => {
@@ -51,10 +83,13 @@ export const useCreateNoteMutation = () => {
 	return useMutation({
 		mutationFn: createNote,
 		onSuccess: (newNote) => {
-			queryClient.setQueryData(['notes'], (notes) => {
-				console.log(notes);
-				return notes;
+			queryClient.setQueryData(['notes'], (notesPagination: NotesPaginationCache): NotesPaginationCache | undefined => {
+				if (notesPagination !== undefined) {
+					notesPagination.pages[0].docs.unshift(newNote);
+					return notesPagination;
+				}
 			});
+
 			queryClient.setQueryData(['notes', newNote.id], newNote);
 
 			navigate(`/notes/${newNote.id}`);
@@ -77,9 +112,16 @@ export const useUpdateNoteMutation = () => {
 		mutationFn: updateNote,
 		onSuccess: (updatedNote, variables) => {
 			queryClient.setQueryData(['notes', variables.noteId], updatedNote);
-			queryClient.setQueryData(['notes'], (notes?: Note[]) => {
-				if (notes !== undefined) {
-					return notes.map((note) => (note.id === variables.noteId ? updatedNote : note));
+
+			queryClient.setQueryData(['notes'], (notesPagination?: NotesPaginationCache): NotesPaginationCache | undefined => {
+				if (notesPagination !== undefined) {
+					return {
+						pageParams: notesPagination.pageParams,
+						pages: notesPagination.pages.map((page) => ({
+							docs: page.docs.map((note) => (note.id === variables.noteId ? updatedNote : note)),
+							meta: page.meta,
+						})),
+					};
 				}
 			});
 		},
@@ -102,15 +144,79 @@ export const useArchiveNoteMutation = () => {
 		mutationFn: archiveNote,
 		onSuccess: (archiveResponse, noteId) => {
 			if (archiveResponse.updated) {
-				queryClient.setQueryData(['notes'], (notes?: Note[]) => {
-					if (notes !== undefined) {
-						return notes.filter((note) => note.id !== noteId);
+				queryClient.invalidateQueries({ queryKey: ['archives'] });
+
+				queryClient.setQueryData(['notes'], (notesPagination?: NotesPaginationCache): NotesPaginationCache | undefined => {
+					if (notesPagination !== undefined) {
+						return {
+							pageParams: notesPagination.pageParams,
+							pages: notesPagination.pages.map((page) => ({
+								docs: page.docs.filter((note) => note.id !== noteId),
+								meta: page.meta,
+							})),
+						};
+					}
+				});
+
+				queryClient.setQueryData(['notes', noteId], (note?: Note): Note | undefined => {
+					if (note !== undefined) {
+						return {
+							...note,
+							status: 'archived',
+						};
 					}
 				});
 
 				toast.success('Note has been archived');
 
 				navigate('/notes', { replace: true });
+			}
+		},
+	});
+};
+
+export const useRestoreNoteMutation = () => {
+	const restoreNote = async (noteId: string) => {
+		return (
+			await axios.post<ResourceUpdatedResponse>(`/notes/${noteId}/restore`, undefined, {
+				withAuthorization: true,
+			})
+		).data.data;
+	};
+
+	const navigate = useNavigate();
+	const queryClient = useQueryClient();
+
+	return useMutation({
+		mutationFn: restoreNote,
+		onSuccess: (restoreResponse, noteId) => {
+			if (restoreResponse.updated) {
+				queryClient.invalidateQueries({ queryKey: ['notes'] });
+
+				queryClient.setQueryData(['archives'], (notesPagination?: NotesPaginationCache): NotesPaginationCache | undefined => {
+					if (notesPagination !== undefined) {
+						return {
+							pageParams: notesPagination.pageParams,
+							pages: notesPagination.pages.map((page) => ({
+								docs: page.docs.filter((note) => note.id !== noteId),
+								meta: page.meta,
+							})),
+						};
+					}
+				});
+
+				queryClient.setQueryData(['notes', noteId], (note?: Note): Note | undefined => {
+					if (note !== undefined) {
+						return {
+							...note,
+							status: 'active',
+						};
+					}
+				});
+
+				toast.success('Note has been restored');
+
+				navigate('/archives');
 			}
 		},
 	});
@@ -132,9 +238,25 @@ export const useDeleteNoteMutation = () => {
 		mutationFn: deleteNote,
 		onSuccess: (deleteResponse, noteId) => {
 			if (deleteResponse.deleted) {
-				queryClient.setQueryData(['notes'], (notes?: Note[]) => {
-					if (notes !== undefined) {
-						return notes.filter((note) => note.id !== noteId);
+				let queryKey: string;
+
+				queryClient.setQueryData(['notes', noteId], (note?: Note) => {
+					if (note !== undefined) {
+						queryKey = note.status === 'active' ? 'notes' : 'archives';
+					}
+
+					return undefined;
+				});
+
+				queryClient.setQueryData([queryKey!], (notesPagination?: NotesPaginationCache): NotesPaginationCache | undefined => {
+					if (notesPagination !== undefined) {
+						return {
+							pageParams: notesPagination.pageParams,
+							pages: notesPagination.pages.map((page) => ({
+								docs: page.docs.filter((note) => note.id !== noteId),
+								meta: page.meta,
+							})),
+						};
 					}
 				});
 

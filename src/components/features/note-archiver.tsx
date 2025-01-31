@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useArchiveNoteMutation } from '@/services/note-service';
 
-export default function NoteArchiver({ noteId, triggerDisabled }: { noteId: string; triggerDisabled: boolean }) {
+export default function NoteArchiver({ noteId, triggerDisabled }: { noteId: string; triggerDisabled?: boolean }) {
 	const { mutateAsync: archiveNote, isPending: archiveNotePending, isSuccess: noteArchived } = useArchiveNoteMutation();
 
 	const [dialogOpened, setDialogOpened] = useState<boolean>(false);
@@ -36,8 +36,8 @@ export default function NoteArchiver({ noteId, triggerDisabled }: { noteId: stri
 						<IconArchive className='size-6' />
 					</div>
 					<div className='space-y-2'>
-						<DialogTitle>Are you absolutely sure?</DialogTitle>
-						<DialogDescription>This action cannot be undone. This will permanently delete your account and remove your data from our servers.</DialogDescription>
+						<DialogTitle>Archive Note</DialogTitle>
+						<DialogDescription>Are you sure you want to archive this note? You can find it in the Archived Notes section and restore it anytime.</DialogDescription>
 					</div>
 				</DialogHeader>
 				<DialogFooter className='space-x-4'>
