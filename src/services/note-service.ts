@@ -94,8 +94,12 @@ export const useCreateNoteMutation = () => {
 		onSuccess: (newNote) => {
 			queryClient.setQueryData(['notes'], (notesPagination: NotesPaginationCache): NotesPaginationCache | undefined => {
 				if (notesPagination !== undefined) {
-					notesPagination.pages[0].docs.unshift(newNote);
-					return notesPagination;
+					const [firstPage, ...rest] = notesPagination.pages;
+
+					return {
+						pageParams: notesPagination.pageParams,
+						pages: [{ docs: [newNote, ...firstPage.docs], meta: firstPage.meta }, ...rest],
+					};
 				}
 			});
 

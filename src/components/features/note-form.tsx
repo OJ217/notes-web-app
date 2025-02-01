@@ -163,7 +163,7 @@ export function CreateNoteForm({
 						<p>Last edited</p>
 					</div>
 
-					<p>Not saved yet</p>
+					<p className='text-neutral-400'>Not saved yet</p>
 				</div>
 
 				<Divider />
