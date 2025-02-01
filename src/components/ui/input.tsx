@@ -11,7 +11,7 @@ const inputVariants = cva('', {
 		variant: {
 			default:
 				'block h-10 w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-sm shadow-sm ring-offset-3 transition-colors duration-300 ease-in-out placeholder:text-neutral-500 not-focus-within:hover:bg-neutral-100 focus-visible:border-neutral-400 focus-visible:ring-[1.5px] focus-visible:ring-neutral-200 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:opacity-50 md:text-sm',
-			unstyled: 'p-0 transition-opacity duration-300 ease-in-out outline-none disabled:opacity-50 placeholder:text-neutral-700',
+			unstyled: 'p-0 transition-opacity duration-300 ease-in-out outline-none disabled:opacity-50 placeholder:text-neutral-500',
 		},
 	},
 	defaultVariants: {

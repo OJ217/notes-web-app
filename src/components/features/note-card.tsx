@@ -9,7 +9,9 @@ export default function NoteCard({ id, title, tags, status, createdAt }: NoteLis
 	return (
 		<NavLink
 			to={`${linkBasePath}/${id}`}
-			className={cn('block space-y-3 rounded-xl p-2 transition-all duration-300 ease-in-out outline-none hover:bg-neutral-100 focus-visible:ring focus-visible:ring-neutral-200')}
+			className={cn(
+				'focus-visible: block space-y-3 rounded-xl border-[1.5px] border-transparent p-2 transition-all duration-300 ease-in-out outline-none hover:bg-neutral-100 focus-visible:border-neutral-200 focus-visible:hover:border-transparent',
+			)}
 		>
 			<h3 className='line-clamp-3 font-semibold break-words'>{title}</h3>
 			{tags.length > 0 && (

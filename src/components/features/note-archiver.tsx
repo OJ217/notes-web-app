@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useArchiveNoteMutation } from '@/services/note-service';
 
-export default function NoteArchiver({ noteId, triggerDisabled }: { noteId: string; triggerDisabled?: boolean }) {
+export default function NoteArchiver({ noteId, children }: { noteId: string; children: React.ReactNode }) {
 	const { mutateAsync: archiveNote, isPending: archiveNotePending, isSuccess: noteArchived } = useArchiveNoteMutation();
 
 	const [dialogOpened, setDialogOpened] = useState<boolean>(false);
@@ -25,10 +25,8 @@ export default function NoteArchiver({ noteId, triggerDisabled }: { noteId: stri
 
 	return (
 		<Dialog open={dialogOpened} onOpenChange={handleDialogOpenChange}>
-			<DialogTrigger asChild>
-				<Button type='button' disabled={triggerDisabled || archiveNotePending} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
-					<IconArchive className='size-[18px]' />
-				</Button>
+			<DialogTrigger disabled={archiveNotePending} asChild>
+				{children}
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader className='flex flex-row gap-4'>

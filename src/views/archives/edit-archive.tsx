@@ -3,7 +3,7 @@ import { toast } from 'sonner';
 
 import NoteDeleter from '@/components/features/note-deleter';
 import NoteRestorer from '@/components/features/note-restorer';
-import { IconCircleClock, IconTag } from '@/components/icons';
+import { IconCircleClock, IconDelete, IconTag } from '@/components/icons';
 import BackButton from '@/components/misc/back-button';
 import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
@@ -38,7 +38,11 @@ export default function EditArchiveView() {
 				<BackButton />
 
 				<div className='flex items-center gap-4'>
-					<NoteDeleter noteId={noteId} />
+					<NoteDeleter noteId={noteId}>
+						<Button type='button' variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+							<IconDelete className='size-5' />
+						</Button>
+					</NoteDeleter>
 
 					<NoteRestorer noteId={noteId} />
 

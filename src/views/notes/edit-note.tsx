@@ -1,30 +1,23 @@
-import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router';
 import { toast } from 'sonner';
 
 import NoteArchiver from '@/components/features/note-archiver';
 import NoteDeleter from '@/components/features/note-deleter';
-import { IconCircleClock, IconTag } from '@/components/icons';
+import { MutateNoteForm } from '@/components/features/note-form';
+import { IconArchive, IconDelete } from '@/components/icons';
 import BackButton from '@/components/misc/back-button';
 import { Button } from '@/components/ui/button';
-import Divider from '@/components/ui/divider';
-import { Form, FormField } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { useNavigateBack, useNotifyErrors } from '@/hooks';
-import { formatDate } from '@/lib/utils';
-import { useNoteQuery, useUpdateNoteMutation } from '@/services/note-service';
+import { useNavigateBack, useNotifyErrors, useResponsiveLayout } from '@/hooks';
+import { useUpdateNoteMutation } from '@/services/note-service';
 import { MutateNoteFormData, MutateNoteFormInput, mutateNoteSchema } from '@/services/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function EditNoteView() {
+	const { isLarge } = useResponsiveLayout();
 	const params = useParams();
 	const noteId = params.id!;
 	const navigateBack = useNavigateBack();
-
-	const { data: note, isPending: noteQueryPending, isSuccess: noteQuerySuccess, isFetched: noteFetched } = useNoteQuery({ noteId: noteId! });
-
-	const [editFormReset, setEditFormReset] = useState<boolean>(false);
 
 	const editNoteForm = useForm<MutateNoteFormInput, unknown, MutateNoteFormData>({
 		resolver: zodResolver(mutateNoteSchema),
@@ -37,19 +30,6 @@ export default function EditNoteView() {
 
 	useNotifyErrors({ control: editNoteForm.control });
 
-	useEffect(() => {
-		if (noteFetched) {
-			if (note !== undefined) {
-				editNoteForm.reset({
-					title: note.title,
-					content: note.content,
-					tags: note.tags.join(', '),
-				});
-			}
-			setEditFormReset(true);
-		}
-	}, [note, editNoteForm, noteFetched]);
-
 	const { mutateAsync: updateNote, isPending: updateNotePending } = useUpdateNoteMutation();
 
 	const handleEditNoteFormSubmit = async (noteData: MutateNoteFormData) => {
@@ -59,105 +39,80 @@ export default function EditNoteView() {
 		});
 	};
 
-	if (noteQueryPending || !noteFetched || !editFormReset) {
-		return <div>Loading...</div>;
-	}
-
-	if ((noteFetched && note === undefined) || !noteQuerySuccess) {
-		return <div>Note not found</div>;
-	}
-
 	return (
-		<>
-			<Form {...editNoteForm}>
-				<form className='flex h-full flex-col gap-3' onSubmit={editNoteForm.handleSubmit(handleEditNoteFormSubmit)}>
-					<div className='flex h-5 items-center justify-between gap-4 text-xs md:text-sm'>
-						<BackButton />
+		<div className='lg:grid lg:grid-cols-[1fr_200px] xl:grid-cols-[1fr_240px]'>
+			<div className='lg:px-6 lg:py-5'>
+				<MutateNoteForm
+					noteId={noteId}
+					form={editNoteForm}
+					disabled={updateNotePending}
+					onSubmit={handleEditNoteFormSubmit}
+					header={
+						!isLarge && (
+							<div className='flex h-5 items-center justify-between gap-4 text-xs md:text-sm'>
+								<BackButton />
 
-						<div className='flex items-center gap-4'>
-							<NoteDeleter noteId={noteId} triggerDisabled={updateNotePending} />
+								<div className='flex items-center gap-4'>
+									<NoteDeleter noteId={noteId}>
+										<Button type='button' disabled={updateNotePending} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+											<IconDelete className='size-5' />
+										</Button>
+									</NoteDeleter>
 
-							<NoteArchiver noteId={noteId} triggerDisabled={updateNotePending} />
+									<NoteArchiver noteId={noteId}>
+										<Button type='button' variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+											<IconArchive className='size-[18px]' />
+										</Button>
+									</NoteArchiver>
 
-							<Button type='button' onClick={navigateBack} disabled={updateNotePending} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
-								<span className='text-xs md:text-sm'>Cancel</span>
-							</Button>
+									<Button type='button' onClick={navigateBack} disabled={updateNotePending} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+										<span className='text-xs md:text-sm'>Cancel</span>
+									</Button>
 
-							<Button
-								type='submit'
-								disabled={!editNoteForm.formState.isDirty || updateNotePending}
-								className='text-blue-500 hover:text-blue-700 focus-visible:ring-blue-700/50'
-								variant={'ghost'}
-							>
-								<span className='text-xs md:text-sm'>Save Note</span>
-							</Button>
-						</div>
-					</div>
+									<Button
+										type='submit'
+										disabled={!editNoteForm.formState.isDirty || updateNotePending}
+										className='text-blue-500 hover:text-blue-700 focus-visible:ring-blue-700/50'
+										variant={'ghost'}
+									>
+										<span className='text-xs md:text-sm'>Save Note</span>
+									</Button>
+								</div>
+							</div>
+						)
+					}
+					footer={
+						isLarge && (
+							<div className='flex items-center gap-4'>
+								<Button type='submit' disabled={!editNoteForm.formState.isDirty || updateNotePending} size={'lg'}>
+									Save Note
+								</Button>
+								<Button type='button' variant={'secondary'}>
+									Cancel
+								</Button>
+							</div>
+						)
+					}
+				/>
+			</div>
 
-					<Divider />
+			{isLarge && (
+				<div className='space-y-3 border-l border-l-neutral-200 px-4 py-5'>
+					<NoteArchiver noteId={noteId}>
+						<Button fullWidth variant={'outline'} className='justify-start'>
+							<IconArchive className='size-5' />
+							<span>Archive Note</span>
+						</Button>
+					</NoteArchiver>
 
-					<FormField
-						name='title'
-						control={editNoteForm.control}
-						render={({ field }) => (
-							<Input
-								type='text'
-								variant={'unstyled'}
-								disabled={updateNotePending}
-								className='text-2xl font-bold placeholder:text-neutral-950'
-								placeholder='Enter a title…'
-								autoComplete='off'
-								{...field}
-							/>
-						)}
-					/>
-
-					<div className='grid grid-cols-[auto_1fr] gap-x-8 gap-y-3 py-1 text-xs text-neutral-700 md:text-sm'>
-						<div className='flex items-center gap-2'>
-							<IconTag className='size-4 shrink-0' />
-							<p>Tags</p>
-						</div>
-
-						<FormField
-							name='tags'
-							control={editNoteForm.control}
-							render={({ field }) => (
-								<Input
-									variant={'unstyled'}
-									type='text'
-									disabled={updateNotePending}
-									className='placeholder:text-neutral-400'
-									placeholder='Add tags separated by commas'
-									autoComplete='off'
-									{...field}
-								/>
-							)}
-						/>
-
-						<div className='flex items-center gap-2'>
-							<IconCircleClock className='size-4 shrink-0' />
-							<p>Last edited</p>
-						</div>
-
-						<p>{formatDate(note.createdAt)}</p>
-					</div>
-
-					<Divider />
-
-					<FormField
-						name='content'
-						control={editNoteForm.control}
-						render={({ field }) => (
-							<textarea
-								disabled={updateNotePending}
-								placeholder='Start typing your note here…'
-								className='flex-grow resize-none text-xs transition-opacity duration-300 ease-in-out outline-none disabled:opacity-50 md:text-sm'
-								{...field}
-							/>
-						)}
-					/>
-				</form>
-			</Form>
-		</>
+					<NoteDeleter noteId={noteId}>
+						<Button fullWidth type='button' variant={'outline'} className='justify-start'>
+							<IconDelete className='size-5' />
+							<span>Delete Note</span>
+						</Button>
+					</NoteDeleter>
+				</div>
+			)}
+		</div>
 	);
 }

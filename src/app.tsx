@@ -31,6 +31,7 @@ import MainLayout from '@/components/layout/main-layout';
 import ThemeLoader from '@/components/hoc/theme-loader';
 
 import { Toaster } from '@/components/ui/toast';
+import NotesLayout from '@/components/layout/notes-layout';
 
 export default function App() {
 	return (
@@ -47,7 +48,7 @@ export default function App() {
 						</Route>
 
 						<Route element={<MainLayout />}>
-							<Route path='notes'>
+							<Route path='notes' element={<NotesLayout />}>
 								<Route index element={<NotesView />} />
 								<Route path='new' element={<CreateNoteView />} />
 								<Route path=':id' element={<EditNoteView />} />

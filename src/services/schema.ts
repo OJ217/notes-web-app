@@ -1,3 +1,4 @@
+import { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
 export const authFormSchema = z.object({
@@ -32,6 +33,7 @@ export const mutateNoteSchema = z.object({
 
 export type MutateNoteFormInput = z.input<typeof mutateNoteSchema>;
 export type MutateNoteFormData = z.output<typeof mutateNoteSchema>;
+export type UseNoteFormReturn = UseFormReturn<MutateNoteFormInput, unknown, MutateNoteFormData>;
 
 export const changePasswordSchema = z
 	.object({

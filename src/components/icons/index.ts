@@ -23,6 +23,7 @@ import IconSerif from '@/components/icons/serif';
 import IconMonospace from '@/components/icons/monospace';
 import IconMoon from '@/components/icons/moon';
 import IconSystem from '@/components/icons/system';
+import IconChevronRight from '@/components/icons/chevron-right';
 
 export {
 	IconArrowLeft,
@@ -50,4 +51,5 @@ export {
 	IconMonospace,
 	IconMoon,
 	IconSystem,
+	IconChevronRight,
 };
