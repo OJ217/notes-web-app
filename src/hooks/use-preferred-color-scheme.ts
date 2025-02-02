@@ -1,5 +1,6 @@
-import { ColorThemeClass } from '@/types';
 import { useEffect, useState } from 'react';
+
+import { ColorThemeClass } from '@/types';
 
 export const usePreferredColorScheme = () => {
 	const [preferredColorScheme, setPreferredColorScheme] = useState<ColorThemeClass>(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');

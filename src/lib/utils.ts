@@ -1,27 +1,27 @@
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
-export const cn = (...inputs: ClassValue[]) => {
+export function cn(...inputs: ClassValue[]) {
 	return twMerge(clsx(inputs));
-};
+}
 
-export const wait = (duration: number) => {
+export function wait(duration: number) {
 	return new Promise((resolve) => setTimeout(resolve, duration));
-};
+}
 
-export const dateIsBefore = (date: Date | string) => {
+export function dateIsBefore(date: Date | string) {
 	const now = new Date();
 	const candidateDate = typeof date === 'string' ? new Date(date) : date;
 	return now < candidateDate;
-};
+}
 
-export const isNotLastElement = (arr: any[] | undefined, index: number): boolean => {
+export function isNotLastElement(arr: any[] | undefined, index: number): boolean {
 	if (!arr) {
 		return false;
 	}
 
 	return index < arr.length - 1;
-};
+}
 
 export function formatDate(dateString: string) {
 	const date = new Date(dateString);
@@ -31,4 +31,8 @@ export function formatDate(dateString: string) {
 	const year = String(date.getFullYear());
 
 	return `${day} ${monthName} ${year}`;
+}
+
+export function isNilString(val?: string) {
+	return val === undefined || val === null || val.trim() === '';
 }

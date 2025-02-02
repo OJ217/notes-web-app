@@ -4,15 +4,16 @@ import { toast } from 'sonner';
 import { CreateNoteForm } from '@/components/features/note-form';
 import BackButton from '@/components/misc/back-button';
 import { Button } from '@/components/ui/button';
-import { useNavigateBack, useNotifyErrors, useResponsiveLayout } from '@/hooks';
+import { useNavigateBack, useNotifyErrors } from '@/hooks';
 import { useCreateNoteMutation } from '@/services/note-service';
 import { MutateNoteFormData, MutateNoteFormInput, mutateNoteSchema } from '@/services/schema';
+import { useLayoutStore } from '@/stores/layout-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function CreateNoteView() {
 	// Utility hooks
 	const navigateBack = useNavigateBack();
-	const { isLarge } = useResponsiveLayout();
+	const { isLarge } = useLayoutStore();
 
 	// Form hooks
 	const createNoteForm = useForm<MutateNoteFormInput, unknown, MutateNoteFormData>({

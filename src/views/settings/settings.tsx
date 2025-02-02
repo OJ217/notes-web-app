@@ -1,8 +1,8 @@
 import SettingsNavigation from '@/components/features/settings-navigation';
-import { useResponsiveLayout } from '@/hooks';
+import { useLayoutStore } from '@/stores/layout-store';
 
 export default function SettingsView() {
-	const { isLarge } = useResponsiveLayout();
+	const { isLarge } = useLayoutStore();
 
 	if (!isLarge) {
 		return (

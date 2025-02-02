@@ -4,17 +4,18 @@ import { toast } from 'sonner';
 
 import NoteArchiver from '@/components/features/note-archiver';
 import NoteDeleter from '@/components/features/note-deleter';
-import { MutateNoteForm } from '@/components/features/note-form';
+import { EditNoteForm } from '@/components/features/note-form';
 import { IconArchive, IconDelete } from '@/components/icons';
 import BackButton from '@/components/misc/back-button';
 import { Button } from '@/components/ui/button';
-import { useNavigateBack, useNotifyErrors, useResponsiveLayout } from '@/hooks';
+import { useNavigateBack, useNotifyErrors } from '@/hooks';
 import { useUpdateNoteMutation } from '@/services/note-service';
 import { MutateNoteFormData, MutateNoteFormInput, mutateNoteSchema } from '@/services/schema';
+import { useLayoutStore } from '@/stores/layout-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function EditNoteView() {
-	const { isLarge } = useResponsiveLayout();
+	const { isLarge } = useLayoutStore();
 	const params = useParams();
 	const noteId = params.id!;
 	const navigateBack = useNavigateBack();
@@ -42,7 +43,7 @@ export default function EditNoteView() {
 	return (
 		<div className='lg:grid lg:grid-cols-[1fr_200px] xl:grid-cols-[1fr_240px]'>
 			<div className='lg:px-6 lg:py-5'>
-				<MutateNoteForm
+				<EditNoteForm
 					noteId={noteId}
 					form={editNoteForm}
 					disabled={updateNotePending}

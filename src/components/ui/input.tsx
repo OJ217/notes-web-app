@@ -34,7 +34,7 @@ const InputWithIcon = React.forwardRef<HTMLInputElement, InputProps & { icon: Ic
 	return (
 		<div
 			className={cn(
-				'flex h-10 w-full items-center gap-3 rounded-lg border border-neutral-300 bg-neutral-50 px-4 text-sm shadow-sm ring-offset-3 transition-all duration-300 ease-in-out focus-within:outline-none not-focus-within:hover:bg-neutral-100 aria-disabled:cursor-not-allowed aria-disabled:bg-neutral-100 aria-disabled:opacity-50',
+				'with-transition flex h-10 w-full items-center gap-3 rounded-lg border border-neutral-300 bg-neutral-50 px-4 text-sm shadow-sm ring-offset-3 focus-within:outline-none not-focus-within:hover:bg-neutral-100 aria-disabled:cursor-not-allowed aria-disabled:bg-neutral-100 aria-disabled:opacity-50',
 				{ 'focus-within:border-neutral-400 focus-within:ring-[1.5px] focus-within:ring-neutral-200': inputFocused },
 				className,
 			)}

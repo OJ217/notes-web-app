@@ -1,16 +1,17 @@
-import { NavLink } from 'react-router';
+import { NavLink, useLocation } from 'react-router';
 
 import { cn, formatDate } from '@/lib/utils';
 import { NoteListItem } from '@/types';
 
-export default function NoteCard({ id, title, tags, status, createdAt }: NoteListItem) {
-	const linkBasePath = `/${status === 'active' ? 'notes' : 'archives'}`;
+export default function NoteCard({ id, title, tags, status, createdAt, basePath }: NoteListItem & { basePath?: string }) {
+	const { search } = useLocation();
+	const linkBasePath = basePath ?? `/${status === 'active' ? 'notes' : 'archives'}`;
 
 	return (
 		<NavLink
-			to={`${linkBasePath}/${id}`}
+			to={`${linkBasePath}/${id}` + search}
 			className={cn(
-				'focus-visible: block space-y-3 rounded-xl border-[1.5px] border-transparent p-2 transition-all duration-300 ease-in-out outline-none hover:bg-neutral-100 focus-visible:border-neutral-200 focus-visible:hover:border-transparent',
+				'focus-visible: with-transition block space-y-3 rounded-xl border-[1.5px] border-transparent p-2 outline-none hover:bg-neutral-100 focus-visible:border-neutral-200 focus-visible:hover:border-transparent',
 			)}
 		>
 			<h3 className='line-clamp-3 font-semibold break-words'>{title}</h3>

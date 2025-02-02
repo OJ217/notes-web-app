@@ -21,7 +21,7 @@ const InputOTPSlot = React.forwardRef<React.ElementRef<'div'>, React.ComponentPr
 		<div
 			ref={ref}
 			className={cn(
-				'relative flex aspect-square w-full max-w-12 items-center justify-center rounded-md border border-neutral-300 shadow-sm transition-all',
+				'with-transition relative flex aspect-square w-full max-w-12 items-center justify-center rounded-md border border-neutral-300 shadow-sm',
 				isActive && 'z-10 ring-[1.5px] ring-neutral-800',
 				className,
 			)}

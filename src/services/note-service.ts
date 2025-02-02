@@ -2,6 +2,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
+import { isNilString } from '@/lib/utils';
 import { MutateNoteFormData } from '@/services/schema';
 import { ApiResponse, Note, NoteListItem, NoteStatus, PaginatedResponse, ResourceDeletedResponse, ResourceUpdatedResponse } from '@/types';
 import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -43,24 +44,27 @@ export const useArchivesQuery = () => {
 	});
 };
 
-export const useTaggedNotesQuery = (tag: string) => {
-	return useQuery({
+export const useTaggedNotesQuery = (tag?: string) => {
+	return useInfiniteQuery({
 		queryKey: ['notes.tagged', tag],
-		queryFn: async () => {
-			return (await fetchNotes({ tag, status: 'active' })).docs;
+		queryFn: async ({ pageParam }) => {
+			return await fetchNotes({ cursor: pageParam, tag, status: 'active' });
 		},
+		initialPageParam: undefined,
+		getNextPageParam,
+		enabled: !isNilString(tag),
 	});
 };
 
-export const useNotesSearchQuery = (search?: string) => {
+export const useSearchNotesQuery = (search?: string) => {
 	return useInfiniteQuery({
-		queryKey: ['notes.search', search],
+		queryKey: ['notes.search', search?.toLowerCase()],
 		queryFn: async ({ pageParam }) => {
 			return await fetchNotes({ cursor: pageParam, search, status: 'active' });
 		},
 		initialPageParam: undefined,
 		getNextPageParam,
-		enabled: search?.trim() !== '' && search !== undefined && search !== null,
+		enabled: !isNilString(search),
 	});
 };
 

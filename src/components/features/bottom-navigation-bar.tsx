@@ -12,9 +12,9 @@ export default function BottomNavigationBar() {
 						key={label}
 						to={link}
 						className={({ isActive }) =>
-							cn('flex flex-col items-center gap-1 rounded-lg py-1 transition-all duration-300 ease-in-out outline-none focus-visible:ring md:py-2', {
+							cn('with-transition flex flex-col items-center gap-1 rounded-lg py-1 outline-none focus-visible:ring', {
 								'bg-blue-50 text-blue-500 focus-visible:ring-blue-500': isActive,
-								'text-neutral-600 focus-visible:ring-neutral-200': !isActive,
+								'text-neutral-600 hover:text-neutral-700 focus-visible:ring-neutral-200': !isActive,
 							})
 						}
 					>

@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Form, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { PasswordInput } from '@/components/ui/input';
 import { ChangePasswordFormValues, changePasswordSchema } from '@/services/schema';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { useChangePasswordMutation } from '@/services/user-service';
+import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function ChangePasswordView() {
 	const changePasswordForm = useForm<ChangePasswordFormValues>({
@@ -40,7 +40,7 @@ export default function ChangePasswordView() {
 						render={({ field }) => (
 							<FormItem className='space-y-2'>
 								<FormLabel>Old Password</FormLabel>
-								<PasswordInput {...field} />
+								<PasswordInput autoComplete='off' {...field} />
 								<FormMessage />
 							</FormItem>
 						)}
@@ -53,7 +53,7 @@ export default function ChangePasswordView() {
 						render={({ field, fieldState }) => (
 							<FormItem className='space-y-2'>
 								<FormLabel>New Password</FormLabel>
-								<PasswordInput {...field} />
+								<PasswordInput autoComplete='off' {...field} />
 								{fieldState.error ? (
 									<FormMessage />
 								) : (
@@ -73,7 +73,7 @@ export default function ChangePasswordView() {
 						render={({ field }) => (
 							<FormItem className='space-y-2'>
 								<FormLabel htmlFor='confirm-new-password'>Confirm New Password</FormLabel>
-								<PasswordInput {...field} />
+								<PasswordInput autoComplete='off' {...field} />
 								<FormMessage />
 							</FormItem>
 						)}

@@ -17,7 +17,7 @@ import ArchivesView from '@/views/archives/archives';
 import EditArchiveView from '@/views/archives/edit-archive';
 
 import TagsView from '@/views/tags/tags';
-import TagView from '@/views/tags/tag';
+import TaggedNotesView from '@/views/tags/tagged-notes';
 
 import SearchView from '@/views/search/search';
 
@@ -28,11 +28,14 @@ import ChangePasswordView from '@/views/settings/change-password';
 
 import AuthLayout from '@/components/layout/auth-layout';
 import MainLayout from '@/components/layout/main-layout';
-import ThemeLoader from '@/components/hoc/theme-loader';
+import NotesLayout from '@/components/layout/notes-layout';
+import ArchivesLayout from '@/components/layout/archives-layout';
+import TagsLayout from '@/components/layout/tags-layout';
+import SearchLayout from '@/components/layout/search-layout';
+import SettingsLayout from '@/components/layout/settings-layout';
 
 import { Toaster } from '@/components/ui/toast';
-import NotesLayout from '@/components/layout/notes-layout';
-import SettingsLayout from '@/components/layout/settings-layout';
+import ThemeLoader from '@/components/hoc/theme-loader';
 
 export default function App() {
 	return (
@@ -55,17 +58,21 @@ export default function App() {
 								<Route path=':id' element={<EditNoteView />} />
 							</Route>
 
-							<Route path='archives'>
+							<Route path='archives' element={<ArchivesLayout />}>
 								<Route index element={<ArchivesView />} />
 								<Route path=':id' element={<EditArchiveView />} />
 							</Route>
 
-							<Route path='tags'>
+							<Route path='tags' element={<TagsLayout />}>
 								<Route index element={<TagsView />} />
-								<Route path=':tag' element={<TagView />} />
+								<Route path=':tag' element={<TaggedNotesView />} />
+								<Route path=':tag/:id' element={<EditNoteView />} />
 							</Route>
 
-							<Route path='search' element={<SearchView />} />
+							<Route path='search' element={<SearchLayout />}>
+								<Route index element={<SearchView />} />
+								<Route path=':id' element={<EditNoteView />} />
+							</Route>
 
 							<Route path='settings' element={<SettingsLayout />}>
 								<Route index element={<SettingsView />} />

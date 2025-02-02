@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { useRestoreNoteMutation } from '@/services/note-service';
 
-export default function NoteRestorer({ noteId }: { noteId: string }) {
+export default function NoteRestorer({ noteId, children }: { noteId: string; children: React.ReactNode }) {
 	const { mutateAsync: restoreNote, isPending: restoreNotePending, isSuccess: noteRestored } = useRestoreNoteMutation();
 
 	const [dialogOpened, setDialogOpened] = useState<boolean>(false);
@@ -25,10 +25,8 @@ export default function NoteRestorer({ noteId }: { noteId: string }) {
 
 	return (
 		<Dialog open={dialogOpened} onOpenChange={handleDialogOpenChange}>
-			<DialogTrigger asChild>
-				<Button type='button' disabled={restoreNotePending} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
-					<IconRestore className='size-[18px]' />
-				</Button>
+			<DialogTrigger disabled={restoreNotePending} asChild>
+				{children}
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader className='flex flex-row gap-4'>

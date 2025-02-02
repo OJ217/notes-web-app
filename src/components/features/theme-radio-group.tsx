@@ -8,7 +8,7 @@ export default function ThemeRadioGroup<T extends Theme>({ value, onChange, opti
 				<RadioGroupItem
 					value={value}
 					key={value}
-					className='group flex items-center gap-4 rounded-xl border border-neutral-200 p-4 transition-all duration-300 ease-in-out hover:bg-neutral-50 focus-visible:border-neutral-300 data-[state=checked]:bg-neutral-100'
+					className='group with-transition flex items-center gap-4 rounded-xl border border-neutral-200 p-4 hover:bg-neutral-50 focus-visible:border-neutral-300 data-[state=checked]:bg-neutral-100'
 				>
 					<div className='flex aspect-square size-10 shrink-0 items-center justify-center rounded-xl border border-neutral-200 bg-white'>
 						<IconComponent className='size-6' />
@@ -17,7 +17,7 @@ export default function ThemeRadioGroup<T extends Theme>({ value, onChange, opti
 						<h3 className='text-sm font-medium'>{label}</h3>
 						<p className='text-xs text-neutral-700'>{description}</p>
 					</div>
-					<div className='border-primary aspect-square size-4 shrink-0 rounded-full border-2 border-neutral-200 bg-white transition-all group-disabled:cursor-not-allowed group-disabled:opacity-50 group-data-[state=checked]:border-4 group-data-[state=checked]:border-blue-500' />
+					<div className='border-primary with-transition aspect-square size-4 shrink-0 rounded-full border-2 border-neutral-200 bg-white group-disabled:cursor-not-allowed group-disabled:opacity-50 group-data-[state=checked]:border-4 group-data-[state=checked]:border-blue-500' />
 				</RadioGroupItem>
 			))}
 		</RadioGroup>

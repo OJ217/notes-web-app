@@ -1,11 +1,11 @@
 import React from 'react';
 
 import { NotesList } from '@/components/features/notes-list';
-import NewNoteCircularButton from '@/components/misc/new-note-circular-button';
-import { useResponsiveLayout } from '@/hooks';
+import { NewNoteCircularButton } from '@/components/misc/new-note-button';
+import { useLayoutStore } from '@/stores/layout-store';
 
 export default function NotesView() {
-	const { isLarge } = useResponsiveLayout();
+	const { isLarge } = useLayoutStore();
 
 	if (!isLarge) {
 		return (

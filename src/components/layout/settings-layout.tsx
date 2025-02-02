@@ -1,9 +1,10 @@
-import SettingsNavigation from '@/components/features/settings-navigation';
-import { useResponsiveLayout } from '@/hooks';
 import { Outlet } from 'react-router';
 
+import SettingsNavigation from '@/components/features/settings-navigation';
+import { useLayoutStore } from '@/stores/layout-store';
+
 export default function SettingsLayout() {
-	const { isLarge } = useResponsiveLayout();
+	const { isLarge } = useLayoutStore();
 
 	return isLarge ? (
 		<div className='grid h-full grid-cols-[240px_1fr] xl:grid-cols-[280px_1fr]'>

@@ -1,108 +1,86 @@
 import { useParams } from 'react-router';
-import { toast } from 'sonner';
 
 import NoteDeleter from '@/components/features/note-deleter';
+import { ArchivedNoteForm } from '@/components/features/note-form';
 import NoteRestorer from '@/components/features/note-restorer';
-import { IconCircleClock, IconDelete, IconTag } from '@/components/icons';
+import { IconDelete, IconRestore } from '@/components/icons';
 import BackButton from '@/components/misc/back-button';
 import { Button } from '@/components/ui/button';
-import Divider from '@/components/ui/divider';
-import { Input } from '@/components/ui/input';
 import { useNavigateBack } from '@/hooks';
-import { formatDate } from '@/lib/utils';
-import { useNoteQuery } from '@/services/note-service';
+import { useLayoutStore } from '@/stores/layout-store';
 
 export default function EditArchiveView() {
+	const { isLarge } = useLayoutStore();
 	const params = useParams();
 	const noteId = params.id!;
 	const navigateBack = useNavigateBack();
 
-	const { data: archivedNote, isPending, isSuccess } = useNoteQuery({ noteId: noteId! });
-
-	const handleFormFieldClick = () => {
-		toast.dismiss();
-		toast.warning('Please restore the note first');
-	};
-
-	if (isPending) {
-		return <div>Loading...</div>;
-	}
-
-	if (!isSuccess) {
-		return <div>Note not found</div>;
-	}
-
 	return (
-		<form className='flex h-full flex-col gap-3'>
-			<div className='flex h-5 items-center justify-between gap-4 text-xs md:text-sm'>
-				<BackButton />
+		<div className='lg:grid lg:grid-cols-[1fr_200px] xl:grid-cols-[1fr_240px]'>
+			<div className='lg:px-6 lg:py-5'>
+				<ArchivedNoteForm
+					noteId={noteId}
+					header={
+						!isLarge && (
+							<div className='flex h-5 items-center justify-between gap-4 text-xs md:text-sm'>
+								<BackButton />
 
-				<div className='flex items-center gap-4'>
+								<div className='flex items-center gap-4'>
+									<NoteDeleter noteId={noteId}>
+										<Button type='button' variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+											<IconDelete className='size-5' />
+										</Button>
+									</NoteDeleter>
+
+									<NoteRestorer noteId={noteId}>
+										<Button type='button' variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+											<IconRestore className='size-[18px]' />
+										</Button>
+									</NoteRestorer>
+
+									<Button type='button' onClick={navigateBack} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+										<span className='text-xs md:text-sm'>Cancel</span>
+									</Button>
+
+									<Button type='submit' className='text-blue-500 hover:text-blue-700 focus-visible:ring-blue-700/50' variant={'ghost'}>
+										<span className='text-xs md:text-sm'>Save Note</span>
+									</Button>
+								</div>
+							</div>
+						)
+					}
+					footer={
+						isLarge && (
+							<div className='flex items-center gap-4'>
+								<Button type='submit' size={'lg'}>
+									Save Note
+								</Button>
+								<Button type='button' onClick={navigateBack} variant={'secondary'}>
+									Cancel
+								</Button>
+							</div>
+						)
+					}
+				/>
+			</div>
+
+			{isLarge && (
+				<div className='space-y-3 border-l border-l-neutral-200 px-4 py-5'>
+					<NoteRestorer noteId={noteId}>
+						<Button fullWidth variant={'outline'} className='justify-start'>
+							<IconRestore className='size-5' />
+							<span>Restore Note</span>
+						</Button>
+					</NoteRestorer>
+
 					<NoteDeleter noteId={noteId}>
-						<Button type='button' variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+						<Button fullWidth type='button' variant={'outline'} className='justify-start'>
 							<IconDelete className='size-5' />
+							<span>Delete Note</span>
 						</Button>
 					</NoteDeleter>
-
-					<NoteRestorer noteId={noteId} />
-
-					<Button type='button' onClick={navigateBack} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
-						<span className='text-xs md:text-sm'>Cancel</span>
-					</Button>
-
-					<Button type='button' onClick={handleFormFieldClick} className='text-blue-500 hover:text-blue-700 focus-visible:ring-blue-700/50' variant={'ghost'}>
-						<span className='text-xs md:text-sm'>Save Note</span>
-					</Button>
 				</div>
-			</div>
-
-			<Divider />
-
-			<Input
-				readOnly
-				type='text'
-				variant={'unstyled'}
-				value={archivedNote.title}
-				onClick={handleFormFieldClick}
-				className='text-2xl font-bold select-none placeholder:text-neutral-950'
-				placeholder='Enter a title…'
-				autoComplete='off'
-			/>
-
-			<div className='grid grid-cols-[auto_1fr] gap-x-8 gap-y-3 py-1 text-xs text-neutral-700 md:text-sm'>
-				<div className='flex items-center gap-2'>
-					<IconTag className='size-4 shrink-0' />
-					<p>Tags</p>
-				</div>
-
-				<Input
-					readOnly
-					type='text'
-					variant={'unstyled'}
-					value={archivedNote.tags.join(', ')}
-					onClick={handleFormFieldClick}
-					className='select-none placeholder:text-neutral-400'
-					placeholder='Add tags separated by commas'
-					autoComplete='off'
-				/>
-
-				<div className='flex items-center gap-2'>
-					<IconCircleClock className='size-4 shrink-0' />
-					<p>Last edited</p>
-				</div>
-
-				<p>{formatDate(archivedNote.createdAt)}</p>
-			</div>
-
-			<Divider />
-
-			<textarea
-				readOnly
-				value={archivedNote.content}
-				onClick={handleFormFieldClick}
-				placeholder='Start typing your note here…'
-				className='flex-grow resize-none text-xs transition-opacity duration-300 ease-in-out outline-none select-none disabled:opacity-50 md:text-sm'
-			/>
-		</form>
+			)}
+		</div>
 	);
 }
