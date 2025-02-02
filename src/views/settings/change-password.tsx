@@ -28,8 +28,8 @@ export default function ChangePasswordView() {
 	return (
 		<Form {...changePasswordForm}>
 			<form className='space-y-6' onSubmit={changePasswordForm.handleSubmit(handleChangePasswordFormSubmit)}>
-				<div className='space-y-3'>
-					<BackButton label='Settings' to={'/settings'} />
+				<div>
+					<BackButton label='Settings' to={'/settings'} className='mv-3 lg:hidden' />
 					<h1 className='text-2xl font-bold'>Change Password</h1>
 				</div>
 				<div className='space-y-4'>

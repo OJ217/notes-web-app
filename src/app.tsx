@@ -32,6 +32,7 @@ import ThemeLoader from '@/components/hoc/theme-loader';
 
 import { Toaster } from '@/components/ui/toast';
 import NotesLayout from '@/components/layout/notes-layout';
+import SettingsLayout from '@/components/layout/settings-layout';
 
 export default function App() {
 	return (
@@ -66,7 +67,7 @@ export default function App() {
 
 							<Route path='search' element={<SearchView />} />
 
-							<Route path='settings'>
+							<Route path='settings' element={<SettingsLayout />}>
 								<Route index element={<SettingsView />} />
 								<Route path='color-theme' element={<ColorThemeView />} />
 								<Route path='font-theme' element={<FontThemeView />} />
