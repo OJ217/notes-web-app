@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 
 import NoteCard from '@/components/features/note-card';
 import EmptyStateCard from '@/components/misc/empty-state-card';
@@ -27,6 +27,7 @@ function NotesCardList({
 	noteBasePath?: string;
 	className?: string;
 }) {
+	const { id } = useParams();
 	const [triggerRef, triggerInView] = useIntersectionObserver<HTMLDivElement>();
 
 	useEffect(() => {
@@ -41,15 +42,15 @@ function NotesCardList({
 				<React.Fragment key={index}>
 					{page.docs.map((note) => (
 						<React.Fragment key={note.id}>
-							<NoteCard {...note} {...(noteBasePath !== undefined && { basePath: noteBasePath })} />
+							<NoteCard {...note} {...(noteBasePath !== undefined && { basePath: noteBasePath })} selected={id === note.id} />
 							<Divider />
 						</React.Fragment>
 					))}
 				</React.Fragment>
 			))}
 			{hasNextPage && (
-				<div ref={triggerRef} className='flex justify-center'>
-					{isFetchingNextPage && <LoadingSpinner className='pt-1 text-neutral-700' />}
+				<div ref={triggerRef} className='flex justify-center pt-1'>
+					{isFetchingNextPage && <LoadingSpinner />}
 				</div>
 			)}
 		</div>
@@ -60,7 +61,11 @@ export function NotesList({ className }: { className?: string }) {
 	const { data: notesPagination, isPending, isError, hasNextPage, isFetchingNextPage, fetchNextPage } = useNotesQuery();
 
 	if (isPending) {
-		return <div>Loading notes...</div>;
+		return (
+			<div className='flex justify-center pt-8'>
+				<LoadingSpinner />
+			</div>
+		);
 	}
 
 	if (isError) {
@@ -78,7 +83,11 @@ export function ArchivesList({ className }: { className?: string }) {
 	const { data: archivesPagination, isPending, isError, hasNextPage, isFetchingNextPage, fetchNextPage } = useArchivesQuery();
 
 	if (isPending) {
-		return <div>Loading notes...</div>;
+		return (
+			<div className='flex justify-center pt-8'>
+				<LoadingSpinner />
+			</div>
+		);
 	}
 
 	if (isError) {
@@ -109,7 +118,11 @@ export function TaggedNotesList({ tag, className }: { tag?: string; className?: 
 	}
 
 	if (isPending) {
-		return <div>Loading notes...</div>;
+		return (
+			<div className='flex justify-center pt-8'>
+				<LoadingSpinner />
+			</div>
+		);
 	}
 
 	if (isError) {
@@ -151,7 +164,11 @@ export function SearchedNotesList({ search, className, showEmptySearchState = fa
 	}
 
 	if (isPending) {
-		return <div>Loading...</div>;
+		return (
+			<div className='flex justify-center pt-8'>
+				<LoadingSpinner />
+			</div>
+		);
 	}
 
 	if (isError) {

@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import Divider from '@/components/ui/divider';
 import { useHeaderTitle } from '@/hooks';
 import { useLayoutStore } from '@/stores/layout-store';
+import ThemeLogo from '@/components/misc/theme-logo';
 
 export default function MainLayout() {
 	const { isLarge } = useLayoutStore();
@@ -32,12 +33,14 @@ export default function MainLayout() {
 function MainMobileLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<div className='grid h-screen grid-rows-[auto_1fr_auto]'>
-			<header className='bg-neutral-100 px-4 py-3 md:px-8 md:py-4'>
-				<Link to={'/notes'} className='inline-block'>
-					<img src='/logo.svg' width={95} height={28} />
-				</Link>
+			<header className='bg-background-300 px-4 py-3 md:px-8 md:py-4'>
+				<Button asChild variant={'link'}>
+					<Link to={'/notes'} className='inline-block'>
+						<ThemeLogo />
+					</Link>
+				</Button>
 			</header>
-			<main className='overflow-y-scroll scroll-smooth rounded-t-2xl bg-white px-4 py-5 md:px-8 md:py-6'>{children}</main>
+			<main className='bg-background overflow-y-scroll scroll-smooth rounded-t-2xl px-4 py-5 md:px-8 md:py-6'>{children}</main>
 			<BottomNavigationBar />
 		</div>
 	);
@@ -48,12 +51,14 @@ function MainDesktopLayout({ children }: { children: React.ReactNode }) {
 
 	return (
 		<div className='grid h-screen grid-cols-[240px_1fr]'>
-			<aside className='flex h-screen flex-col gap-2 border-r border-r-neutral-200'>
+			<aside className='border-r-background-200 flex h-screen flex-col gap-2 border-r'>
 				<div className='space-y-2 px-4 pt-6'>
 					<div className='pb-5'>
-						<Link to={'/notes'}>
-							<img src='/logo.svg' width={95} height={28} />
-						</Link>
+						<Button asChild variant={'link'}>
+							<Link to={'/notes'}>
+								<ThemeLogo />
+							</Link>
+						</Button>
 					</div>
 
 					<div className='space-y-2'>
@@ -63,17 +68,17 @@ function MainDesktopLayout({ children }: { children: React.ReactNode }) {
 
 					<Divider />
 
-					<h3 className='px-2.5 text-sm font-medium text-neutral-500'>Tags</h3>
+					<h3 className='text-foreground-50 px-2.5 text-sm font-medium'>Tags</h3>
 				</div>
 				<TagsList className='grow space-y-2 overflow-y-auto px-4 pt-2 pb-6' />
 			</aside>
 			<div className='grid h-screen grid-rows-[auto_1fr]'>
-				<header className='flex items-center justify-between gap-4 border-b border-b-neutral-200 px-8 py-5'>
+				<header className='border-b-background-200 flex items-center justify-between gap-4 border-b px-8 py-5'>
 					<h1 className='text-2xl font-bold'>{headerTitle}</h1>
 					<div className='flex items-center gap-4'>
 						<SearchInput className='w-[300px] bg-transparent' />
 
-						<Button asChild size={'icon'} variant={'ghost'} className='with-transition size-9 text-neutral-500'>
+						<Button asChild size={'icon'} variant={'ghost'} className='with-transition text-foreground-50 size-9'>
 							<Link to={'/settings'}>
 								<IconSettings className='size' />
 							</Link>

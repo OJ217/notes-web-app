@@ -38,7 +38,7 @@ export default function CreateNoteView() {
 	};
 
 	return (
-		<div className='lg:px-6 lg:py-5 xl:w-[calc(100%-240px)] xl:border-r xl:border-r-neutral-200'>
+		<div className='xl:border-r-background-200 h-full lg:px-6 lg:py-5 xl:w-[calc(100%-240px)] xl:border-r'>
 			<CreateNoteForm
 				form={createNoteForm}
 				onSubmit={handleCreateNoteFormSubmit}
@@ -49,7 +49,7 @@ export default function CreateNoteView() {
 							<BackButton type='button' disabled={isPending} />
 
 							<div className='flex items-center gap-4'>
-								<Button type='button' disabled={isPending} onClick={navigateBack} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+								<Button type='button' disabled={isPending} onClick={navigateBack} variant={'ghost'} className='hover:text-foreground text-foreground-100'>
 									<span>Cancel</span>
 								</Button>
 								<Button type='submit' disabled={isPending} className='text-blue-500 hover:text-blue-700 focus-visible:ring-blue-700/50' variant={'ghost'}>

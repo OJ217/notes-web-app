@@ -1,3 +1,3 @@
 export default function Divider() {
-  return <hr className="w-full border-t border-t-neutral-200" />;
+	return <hr className='border-t-background-200 w-full border-t' />;
 }

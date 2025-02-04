@@ -9,9 +9,11 @@ import { IconComponent } from '@/types';
 const inputVariants = cva('', {
 	variants: {
 		variant: {
-			default:
-				'block h-10 w-full rounded-lg border border-neutral-300 bg-white px-4 py-3 text-sm shadow-sm ring-offset-3 transition-colors duration-300 ease-in-out placeholder:text-neutral-500 not-focus-within:hover:bg-neutral-100 focus-visible:border-neutral-400 focus-visible:ring-[1.5px] focus-visible:ring-neutral-200 focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:bg-neutral-100 disabled:opacity-50 md:text-sm',
-			unstyled: 'p-0 transition-opacity duration-300 ease-in-out outline-none disabled:opacity-50 placeholder:text-neutral-500',
+			default: cn(
+				'block h-10 w-full rounded-lg border px-4 py-3 text-sm shadow-sm transition-colors duration-300 ease-in-out focus-visible:ring-[1.5px] focus-visible:outline-none disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+				'placeholder:text-foreground-50 not-focus-within:hover:bg-background-300 focus-visible:border-background-50 focus-visible:ring-background-200 disabled:bg-background-300 border-background-100',
+			),
+			unstyled: 'p-0 transition-opacity duration-300 ease-in-out outline-none disabled:opacity-50 placeholder:text-foreground-50',
 		},
 	},
 	defaultVariants: {
@@ -34,12 +36,13 @@ const InputWithIcon = React.forwardRef<HTMLInputElement, InputProps & { icon: Ic
 	return (
 		<div
 			className={cn(
-				'with-transition flex h-10 w-full items-center gap-3 rounded-lg border border-neutral-300 bg-neutral-50 px-4 text-sm shadow-sm ring-offset-3 focus-within:outline-none not-focus-within:hover:bg-neutral-100 aria-disabled:cursor-not-allowed aria-disabled:bg-neutral-100 aria-disabled:opacity-50',
-				{ 'focus-within:border-neutral-400 focus-within:ring-[1.5px] focus-within:ring-neutral-200': inputFocused },
+				'with-transition flex h-10 w-full items-center gap-3 rounded-lg border px-4 text-sm shadow-sm focus-within:outline-none aria-disabled:cursor-not-allowed',
+				'placeholder:text-foreground-50 border-background-100 not-focus-within:hover:bg-background-300 aria-disabled:bg-background-300',
+				{ 'focus-within:border-background-50 focus-within:ring-background-200 focus-within:ring-[1.5px]': inputFocused },
 				className,
 			)}
 		>
-			<IconComponent className='size-5 shrink-0 text-neutral-500' />
+			<IconComponent className='text-foreground-50 size-5 shrink-0' />
 			<input
 				ref={ref}
 				{...props}
@@ -60,17 +63,18 @@ const PasswordInput = React.forwardRef<HTMLInputElement, Exclude<InputProps, 'ty
 		<div
 			aria-disabled={props.disabled}
 			className={cn(
-				'flex h-10 w-full items-center rounded-lg border border-neutral-300 bg-white pr-2 pl-4 text-sm shadow-sm ring-offset-3 transition-colors duration-300 ease-in-out focus-within:outline-none not-focus-within:hover:bg-neutral-100 aria-disabled:cursor-not-allowed aria-disabled:bg-neutral-100 aria-disabled:opacity-50 md:text-sm',
-				{ 'focus-within:border-neutral-400 focus-within:ring-[1.5px] focus-within:ring-neutral-200': inputFocused },
+				'flex h-10 w-full items-center rounded-lg border pr-2 pl-4 text-sm shadow-sm transition-colors duration-300 ease-in-out focus-within:outline-none aria-disabled:cursor-not-allowed aria-disabled:opacity-50',
+				'placeholder:text-foreground-50 border-background-100 not-focus-within:hover:bg-background-300 aria-disabled:bg-background-300',
+				{ 'focus-within:border-background-50 focus-within:ring-background-200 focus-within:ring-[1.5px]': inputFocused },
 				className,
 			)}
 		>
-			<input type={type} ref={ref} {...props} onBlur={() => setInputFocused(false)} onFocus={() => setInputFocused(true)} className='h-full w-full outline-none placeholder:text-neutral-500' />
+			<input type={type} ref={ref} {...props} onBlur={() => setInputFocused(false)} onFocus={() => setInputFocused(true)} className='placeholder:text-foreground-50 h-full w-full outline-none' />
 			<Button
 				type='button'
 				variant={'icon'}
 				size={'icon'}
-				className='shrink-0 text-neutral-500'
+				className='text-foreground-50 shrink-0'
 				disabled={props.disabled}
 				onClick={() => {
 					setType(type === 'password' ? 'text' : 'password');

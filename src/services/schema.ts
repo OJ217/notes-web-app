@@ -1,3 +1,4 @@
+import { capitalize } from '@/lib/utils';
 import { UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -24,7 +25,8 @@ export const mutateNoteSchema = z.object({
 			tagString
 				.trim()
 				.split(',')
-				.map((tag) => tag.trim()),
+				.map(capitalize)
+				.filter((tag) => tag.length > 0),
 		)
 		.refine((tags) => tags.length <= 3, { message: 'Please enter up to 3 tags' })
 		.refine((tags) => tags.every((tag) => tag.length < 40), { message: 'Tag is too long' })

@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router';
 
 import queryClient from '@/config/query-client';
 import { QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 import RootView from '@/views/root/root';
 
@@ -85,6 +86,7 @@ export default function App() {
 				</BrowserRouter>
 				<Toaster />
 			</ThemeLoader>
+			<ReactQueryDevtools client={queryClient} initialIsOpen={false} />
 		</QueryClientProvider>
 	);
 }

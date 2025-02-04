@@ -30,7 +30,7 @@ export default function NoteDeleter({ noteId, children }: { noteId: string; chil
 			</DialogTrigger>
 			<DialogContent>
 				<DialogHeader className='flex flex-row gap-4'>
-					<div className='flex size-10 shrink-0 items-center justify-center rounded-lg bg-neutral-100'>
+					<div className='bg-background-300 flex size-10 shrink-0 items-center justify-center rounded-lg'>
 						<IconDelete className='size-6' />
 					</div>
 					<div className='space-y-2'>

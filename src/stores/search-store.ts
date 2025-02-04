@@ -12,15 +12,23 @@ type SearchStoreActions = {
 
 type SearchStore = SearchStoreState & SearchStoreActions;
 
+export function getDefaultSearchTerm() {
+	const params = new URLSearchParams(window.location.search);
+	return params.get('query') || '';
+}
+
 export const useSearchStore = create<SearchStore>((set) => {
+	const params = new URLSearchParams(window.location.search);
+	const defaultSearchTerm = params.get('query') || '';
+
 	return {
-		search: '',
-		searchInputValue: '',
+		search: defaultSearchTerm,
+		searchInputValue: defaultSearchTerm,
 		setSearch(newSearchValue) {
-			set({ search: newSearchValue });
+			set((state) => ({ ...state, search: newSearchValue }));
 		},
 		setSearchInputValue(newSearchInputValue) {
-			set({ searchInputValue: newSearchInputValue });
+			set((state) => ({ ...state, searchInputValue: newSearchInputValue }));
 		},
 	};
 });

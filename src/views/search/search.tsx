@@ -6,7 +6,7 @@ import { useSearchStore } from '@/stores/search-store';
 
 export default function SearchView() {
 	const { isLarge } = useLayoutStore();
-	const { search, searchInputValue } = useSearchStore();
+	const { search } = useSearchStore();
 
 	if (!isLarge) {
 		return (
@@ -15,7 +15,7 @@ export default function SearchView() {
 
 				<SearchInput />
 
-				<p className='text-sm text-neutral-700'>{!isNilString(searchInputValue) ? `All notes matching ”${searchInputValue}” are displayed below.` : 'Please enter your search keyword'}</p>
+				<p className='text-foreground-200 text-sm'>{!isNilString(search) ? `All notes matching ”${search}” are displayed below.` : 'Please enter your search keyword'}</p>
 
 				<SearchedNotesList search={search} />
 			</div>

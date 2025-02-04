@@ -27,18 +27,18 @@ export default function EditArchiveView() {
 
 								<div className='flex items-center gap-4'>
 									<NoteDeleter noteId={noteId}>
-										<Button type='button' variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+										<Button type='button' variant={'ghost'} className='hover:text-foreground text-foreground-100'>
 											<IconDelete className='size-5' />
 										</Button>
 									</NoteDeleter>
 
 									<NoteRestorer noteId={noteId}>
-										<Button type='button' variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+										<Button type='button' variant={'ghost'} className='hover:text-foreground text-foreground-100'>
 											<IconRestore className='size-[18px]' />
 										</Button>
 									</NoteRestorer>
 
-									<Button type='button' onClick={navigateBack} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+									<Button type='button' onClick={navigateBack} variant={'ghost'} className='hover:text-foreground text-foreground-100'>
 										<span className='text-xs md:text-sm'>Cancel</span>
 									</Button>
 
@@ -65,7 +65,7 @@ export default function EditArchiveView() {
 			</div>
 
 			{isLarge && (
-				<div className='space-y-3 border-l border-l-neutral-200 px-4 py-5'>
+				<div className='border-l-background-200 space-y-3 border-l px-4 py-5'>
 					<NoteRestorer noteId={noteId}>
 						<Button fullWidth variant={'outline'} className='justify-start'>
 							<IconRestore className='size-5' />

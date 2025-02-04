@@ -27,11 +27,12 @@ export default function ChangePasswordView() {
 
 	return (
 		<Form {...changePasswordForm}>
-			<form className='space-y-6' onSubmit={changePasswordForm.handleSubmit(handleChangePasswordFormSubmit)}>
+			<form className='space-y-5' onSubmit={changePasswordForm.handleSubmit(handleChangePasswordFormSubmit)}>
 				<div>
-					<BackButton label='Settings' to={'/settings'} className='mv-3 lg:hidden' />
-					<h1 className='text-2xl font-bold'>Change Password</h1>
+					<BackButton label='Settings' className='mb-3 lg:hidden' />
+					<h1 className='text-2xl font-bold'>Font Theme</h1>
 				</div>
+
 				<div className='space-y-4'>
 					<FormField
 						disabled={changePasswordPending}
@@ -57,7 +58,7 @@ export default function ChangePasswordView() {
 								{fieldState.error ? (
 									<FormMessage />
 								) : (
-									<FormDescription className='flex items-center gap-2 text-neutral-600'>
+									<FormDescription className='text-foreground-100 flex items-center gap-2'>
 										<IconInfoCircle className='size-4' />
 										<p className='text-xs'>At least 8 characters</p>
 									</FormDescription>
@@ -72,13 +73,14 @@ export default function ChangePasswordView() {
 						name='confirmPassword'
 						render={({ field }) => (
 							<FormItem className='space-y-2'>
-								<FormLabel htmlFor='confirm-new-password'>Confirm New Password</FormLabel>
+								<FormLabel>Confirm New Password</FormLabel>
 								<PasswordInput autoComplete='off' {...field} />
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
 				</div>
+
 				<div className='flex justify-end'>
 					<Button type='submit' loading={changePasswordPending}>
 						Save Password

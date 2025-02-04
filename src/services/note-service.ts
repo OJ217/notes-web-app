@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { toast } from 'sonner';
 
@@ -6,6 +7,7 @@ import { isNilString } from '@/lib/utils';
 import { MutateNoteFormData } from '@/services/schema';
 import { ApiResponse, Note, NoteListItem, NoteStatus, PaginatedResponse, ResourceDeletedResponse, ResourceUpdatedResponse } from '@/types';
 import { InfiniteData, useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useDebouncedCallback, useNavigateBack } from '@/hooks';
 
 type NotesPaginationCache = InfiniteData<PaginatedResponse<NoteListItem>>;
 
@@ -56,15 +58,29 @@ export const useTaggedNotesQuery = (tag?: string) => {
 	});
 };
 
-export const useSearchNotesQuery = (search?: string) => {
+export const useSearchNotesQuery = (searchInputValue?: string) => {
+	const [searchValue, setSearchValue] = useState('');
+
+	const debouncedSetSearch = useDebouncedCallback((newSearchValue) => {
+		setSearchValue(newSearchValue);
+	}, 750);
+
+	useEffect(() => {
+		if (isNilString(searchInputValue)) {
+			setSearchValue('');
+		} else {
+			debouncedSetSearch(searchInputValue);
+		}
+	}, [debouncedSetSearch, searchInputValue]);
+
 	return useInfiniteQuery({
-		queryKey: ['notes.search', search?.toLowerCase()],
+		queryKey: ['notes.search', searchValue?.toLowerCase()],
 		queryFn: async ({ pageParam }) => {
-			return await fetchNotes({ cursor: pageParam, search, status: 'active' });
+			return await fetchNotes({ cursor: pageParam, search: searchValue, status: 'active' });
 		},
 		initialPageParam: undefined,
 		getNextPageParam,
-		enabled: !isNilString(search),
+		enabled: !isNilString(searchValue), // Only fetch when debounced search is valid
 	});
 };
 
@@ -109,7 +125,7 @@ export const useCreateNoteMutation = () => {
 
 			queryClient.setQueryData(['note', newNote.id], newNote);
 
-			navigate(`/notes/${newNote.id}`);
+			navigate(`/notes/${newNote.id}`, { replace: true, preventScrollReset: true });
 		},
 	});
 };
@@ -157,8 +173,8 @@ export const useArchiveNoteMutation = () => {
 		).data.data;
 	};
 
-	const navigate = useNavigate();
 	const queryClient = useQueryClient();
+	const navigateBack = useNavigateBack({ options: { replace: true } });
 
 	return useMutation({
 		mutationFn: archiveNote,
@@ -192,7 +208,7 @@ export const useArchiveNoteMutation = () => {
 
 				toast.success('Note has been archived');
 
-				navigate('/notes', { replace: true });
+				navigateBack();
 			}
 		},
 	});
@@ -207,8 +223,8 @@ export const useRestoreNoteMutation = () => {
 		).data.data;
 	};
 
-	const navigate = useNavigate();
 	const queryClient = useQueryClient();
+	const navigateBack = useNavigateBack({ options: { replace: true } });
 
 	return useMutation({
 		mutationFn: restoreNote,
@@ -242,7 +258,7 @@ export const useRestoreNoteMutation = () => {
 
 				toast.success('Note has been restored');
 
-				navigate('/archives');
+				navigateBack();
 			}
 		},
 	});
@@ -257,8 +273,8 @@ export const useDeleteNoteMutation = () => {
 		).data.data;
 	};
 
-	const navigate = useNavigate();
 	const queryClient = useQueryClient();
+	const navigateBack = useNavigateBack({ options: { replace: true } });
 
 	return useMutation({
 		mutationFn: deleteNote,
@@ -291,7 +307,7 @@ export const useDeleteNoteMutation = () => {
 
 				toast.success('Note has been deleted');
 
-				navigate('/notes', { replace: true });
+				navigateBack();
 			}
 		},
 	});

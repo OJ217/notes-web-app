@@ -1,14 +1,10 @@
-import { To, useLocation, useNavigate } from 'react-router';
+import { NavigateOptions, useLocation, useNavigate } from 'react-router';
 
-export const useNavigateBack = ({ fallback }: { fallback: To } = { fallback: '/notes' }) => {
+export const useNavigateToParent = ({ options }: { options?: NavigateOptions } = {}) => {
 	const navigate = useNavigate();
-	const location = useLocation();
+	const { search } = useLocation();
 
 	return () => {
-		if (location.key !== 'default') {
-			navigate(-1);
-		} else {
-			navigate(fallback);
-		}
+		navigate({ pathname: '..', search }, options);
 	};
 };

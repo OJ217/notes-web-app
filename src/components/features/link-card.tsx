@@ -12,8 +12,8 @@ export default function LinkCard({ link, label, icon: IconComponent, className }
 				cn(
 					'group with-transition flex items-center gap-2 rounded-xl px-2.5 py-2 outline-none lg:px-3 lg:py-2.5',
 					{
-						'bg-neutral-100 text-neutral-950 focus-visible:bg-neutral-200': isActive,
-						'text-neutral-700 hover:bg-neutral-50 hover:text-neutral-950 focus-visible:ring-[1.5px] focus-visible:ring-neutral-200': !isActive,
+						'text-foreground focus-visible:bg-background-200 bg-background-300': isActive,
+						'hover:text-foreground text-foreground-200 focus-visible:ring-background-200 hover:bg-background-400 focus-visible:ring-[1.5px]': !isActive,
 					},
 					className,
 				)

@@ -1,27 +1,75 @@
 @import 'tailwindcss';
 @plugin "tailwindcss-animate";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+	:root {
+		--blue-700: #2547d0;
+		--blue-500: #335cff;
+		--blue-50: #ebf1ff;
+		--green-500: #21c16b;
+		--green-100: #d1fbe9;
+		--red-500: #fb3748;
+		--red-100: #ffd5d8;
+	}
+
+	.light {
+		--foreground: #0e121b;
+		--foreground-400: #191b25;
+		--foreground-300: #232530;
+		--foreground-200: #2b303b;
+		--foreground-100: #525866;
+		--foreground-50: #717784;
+		--background-50: #99a0ae;
+		--background-100: #cacfd8;
+		--background-200: #e0e4ea;
+		--background-300: #f3f5f8;
+		--background-400: #f5f7fa;
+		--background: #ffffff;
+	}
+
+	.dark {
+		--foreground: #ffffff;
+		--foreground-400: #f5f7fa;
+		--foreground-300: #f3f5f8;
+		--foreground-200: #e0e4ea;
+		--foreground-100: #cacfd8;
+		--foreground-50: #99a0ae;
+		--background-50: #717784;
+		--background-100: #525866;
+		--background-200: #2b303b;
+		--background-300: #232530;
+		--background-400: #191b25;
+		--background: #0e121b;
+	}
+}
+
+@theme inline {
+	--color-blue-700: var(--blue-700);
+	--color-blue-500: var(--blue-500);
+	--color-blue-50: var(--blue-50);
+	--color-green-500: var(--green-500);
+	--color-green-100: var(--green-100);
+	--color-red-500: var(--red-500);
+	--color-red-100: var(--red-100);
+
+	--color-foreground: var(--foreground);
+	--color-foreground-400: var(--foreground-400);
+	--color-foreground-300: var(--foreground-300);
+	--color-foreground-200: var(--foreground-200);
+	--color-foreground-100: var(--foreground-100);
+	--color-foreground-50: var(--foreground-50);
+	--color-background-50: var(--background-50);
+	--color-background-100: var(--background-100);
+	--color-background-200: var(--background-200);
+	--color-background-300: var(--background-300);
+	--color-background-400: var(--background-400);
+	--color-background: var(--background);
+}
+
 @theme {
 	--font-inter: Inter, sans-serif;
-
-	--color-neutral-950: #0e121b;
-	--color-neutral-900: #191b25;
-	--color-neutral-800: #232530;
-	--color-neutral-700: #2b303b;
-	--color-neutral-600: #525866;
-	--color-neutral-500: #717784;
-	--color-neutral-400: #99a0ae;
-	--color-neutral-300: #cacfd8;
-	--color-neutral-200: #e0e4ea;
-	--color-neutral-100: #f3f5f8;
-	--color-neutral-50: #f5f7fa;
-	--color-blue-700: #2547d0;
-	--color-blue-500: #335cff;
-	--color-blue-50: #ebf1ff;
-	--color-green-500: #21c16b;
-	--color-green-100: #d1fbe9;
-	--color-red-500: #fb3748;
-	--color-red-100: #ffd5d8;
 
 	--animate-spinner: spinner 1s cubic-bezier(0.2, 0, 0.2, 1) infinite;
 	--animate-caret-blink: caret-blink 1.25s ease-out infinite;
@@ -60,5 +108,5 @@
 }
 
 body {
-	@apply bg-neutral-100 text-neutral-950 select-none lg:bg-white;
+	@apply lg:bg-background text-foreground bg-background-300 transform-none select-none;
 }

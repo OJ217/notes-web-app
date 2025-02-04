@@ -23,11 +23,11 @@ export default function ColorThemeView() {
 	return (
 		<div className='space-y-5'>
 			<div>
-				<BackButton label='Settings' to='/settings' className='mb-3 lg:hidden' />
+				<BackButton label='Settings' className='mb-3 lg:hidden' />
 
 				<div className='space-y-1'>
 					<h1 className='text-2xl font-bold'>Color Theme</h1>
-					<p className='text-sm text-neutral-700'>Choose your color theme:</p>
+					<p className='text-foreground-200 text-sm'>Choose your color theme:</p>
 				</div>
 			</div>
 

@@ -17,7 +17,7 @@ export const useHeaderTitle = (): React.ReactNode => {
 			if (params.tag !== undefined) {
 				return (
 					<>
-						<span className='text-neutral-600'>Notes Tagged:</span> {params.tag}
+						<span className='text-foreground-100'>Notes Tagged:</span> {params.tag}
 					</>
 				);
 			}
@@ -26,7 +26,7 @@ export const useHeaderTitle = (): React.ReactNode => {
 			if (searchParams.get('query') !== null) {
 				return (
 					<>
-						<span className='text-neutral-600'>Showing results for:</span> {searchParams.get('query')}
+						<span className='text-foreground-100'>Showing results for:</span> {searchParams.get('query')}
 					</>
 				);
 			}

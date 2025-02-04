@@ -8,7 +8,7 @@ import Divider from '@/components/ui/divider';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input, PasswordInput } from '@/components/ui/input';
 import { signInWithGoogle, useLogInMutation } from '@/services/auth-service';
-import { AuthFormValues, authFormSchema } from '@/services/schema';
+import { authFormSchema, AuthFormValues } from '@/services/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 export default function LogInView() {
@@ -37,9 +37,9 @@ export default function LogInView() {
 							control={loginForm.control}
 							render={({ field }) => (
 								<FormItem className='space-y-2'>
-									<FormLabel htmlFor='email'>Email Address</FormLabel>
+									<FormLabel>Email Address</FormLabel>
 									<FormControl>
-										<Input id='email' autoComplete='username' placeholder='email@example.com' disabled={logInPending} {...field} />
+										<Input autoComplete='off' placeholder='email@example.com' disabled={logInPending} {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -51,9 +51,9 @@ export default function LogInView() {
 							control={loginForm.control}
 							render={({ field }) => (
 								<FormItem className='space-y-2'>
-									<FormLabel htmlFor='password'>Password</FormLabel>
+									<FormLabel>Password</FormLabel>
 									<FormControl>
-										<PasswordInput id='password' autoComplete='current-password' disabled={logInPending} {...field} />
+										<PasswordInput autoComplete='off' disabled={logInPending} {...field} />
 									</FormControl>
 									<FormMessage />
 								</FormItem>
@@ -69,7 +69,7 @@ export default function LogInView() {
 				<Divider />
 
 				<div className='space-y-4 pt-4'>
-					<p className='text-center text-sm text-neutral-600'>Or log in with:</p>
+					<p className='text-foreground-100 text-center text-sm'>Or log in with:</p>
 					<Button fullWidth variant={'outline'} onClick={signInWithGoogle} disabled={logInPending}>
 						<IconGoogle className='size-6' />
 						<span>Google</span>
@@ -78,10 +78,10 @@ export default function LogInView() {
 
 				<div className='pt-4'>
 					<p className='text-center text-sm'>
-						<span className='text-neutral-600'>No account yet?</span>{' '}
-						<Link to={'/sign-up'} className='hover:underline'>
-							Sign Up
-						</Link>
+						<span className='text-foreground-100'>No account yet?</span>{' '}
+						<Button asChild variant={'link'}>
+							<Link to={'/sign-up'}>Login</Link>
+						</Button>
 					</p>
 				</div>
 			</>

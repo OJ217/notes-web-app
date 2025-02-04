@@ -59,11 +59,11 @@ export function EditNoteForm({
 					control={form.control}
 					disabled={disabled}
 					render={({ field }) => (
-						<Input type='text' variant={'unstyled'} className='text-2xl font-bold placeholder:text-neutral-950' placeholder='Enter a title…' autoComplete='off' {...field} />
+						<Input type='text' variant={'unstyled'} className='placeholder:text-foreground text-2xl font-bold' placeholder='Enter a title…' autoComplete='off' {...field} />
 					)}
 				/>
 
-				<div className='grid grid-cols-[auto_1fr] gap-x-8 gap-y-3 py-1 text-xs text-neutral-700 md:text-sm'>
+				<div className='text-foreground-200 grid grid-cols-[auto_1fr] gap-x-8 gap-y-3 py-1 text-xs md:text-sm'>
 					<div className='flex items-center gap-2'>
 						<IconTag className='size-4 shrink-0' />
 						<p>Tags</p>
@@ -74,7 +74,7 @@ export function EditNoteForm({
 						control={form.control}
 						disabled={disabled}
 						render={({ field }) => (
-							<Input variant={'unstyled'} type='text' className='placeholder:text-neutral-400' placeholder='Add tags separated by commas' autoComplete='off' {...field} />
+							<Input variant={'unstyled'} type='text' className='placeholder:text-background-50' placeholder='Add tags separated by commas' autoComplete='off' {...field} />
 						)}
 					/>
 
@@ -140,11 +140,11 @@ export function CreateNoteForm({
 					control={form.control}
 					disabled={disabled}
 					render={({ field }) => (
-						<Input type='text' variant={'unstyled'} className='text-2xl font-bold placeholder:text-neutral-950' placeholder='Enter a title…' autoComplete='off' {...field} />
+						<Input type='text' variant={'unstyled'} className='placeholder:text-foreground text-2xl font-bold' placeholder='Enter a title…' autoComplete='off' {...field} />
 					)}
 				/>
 
-				<div className='grid grid-cols-[auto_1fr] gap-x-8 gap-y-3 py-1 text-xs text-neutral-700 md:text-sm'>
+				<div className='text-foreground-200 grid grid-cols-[auto_1fr] gap-x-8 gap-y-3 py-1 text-xs md:text-sm'>
 					<div className='flex items-center gap-2'>
 						<IconTag className='size-4 shrink-0' />
 						<p>Tags</p>
@@ -155,7 +155,7 @@ export function CreateNoteForm({
 						control={form.control}
 						disabled={disabled}
 						render={({ field }) => (
-							<Input variant={'unstyled'} type='text' className='placeholder:text-neutral-400' placeholder='Add tags separated by commas' autoComplete='off' {...field} />
+							<Input variant={'unstyled'} type='text' className='placeholder:text-background-50' placeholder='Add tags separated by commas' autoComplete='off' {...field} />
 						)}
 					/>
 
@@ -164,7 +164,7 @@ export function CreateNoteForm({
 						<p>Last edited</p>
 					</div>
 
-					<p className='text-neutral-400'>Not saved yet</p>
+					<p className='text-background-50'>Not saved yet</p>
 				</div>
 
 				<Divider />
@@ -229,12 +229,12 @@ export function ArchivedNoteForm({ noteId, header, footer }: { noteId: string; h
 				variant={'unstyled'}
 				value={archivedNote.title}
 				onClick={handleFormFieldClick}
-				className='text-2xl font-bold select-none placeholder:text-neutral-950'
+				className='placeholder:text-foreground text-2xl font-bold select-none'
 				placeholder='Enter a title…'
 				autoComplete='off'
 			/>
 
-			<div className='grid grid-cols-[auto_1fr] gap-x-8 gap-y-3 py-1 text-xs text-neutral-700 md:text-sm'>
+			<div className='text-foreground-200 grid grid-cols-[auto_1fr] gap-x-8 gap-y-3 py-1 text-xs md:text-sm'>
 				<div className='flex items-center gap-2'>
 					<IconTag className='size-4 shrink-0' />
 					<p>Tags</p>
@@ -246,7 +246,7 @@ export function ArchivedNoteForm({ noteId, header, footer }: { noteId: string; h
 					variant={'unstyled'}
 					value={archivedNote.tags.join(', ')}
 					onClick={handleFormFieldClick}
-					className='select-none placeholder:text-neutral-400'
+					className='placeholder:text-background-50 select-none'
 					placeholder='Add tags separated by commas'
 					autoComplete='off'
 				/>

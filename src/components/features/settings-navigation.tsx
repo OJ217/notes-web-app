@@ -17,7 +17,7 @@ export default function SettingsNavigation() {
 			<LogoutDialog>
 				<Button
 					type='button'
-					className='group with-transition flex items-center gap-2 rounded-xl px-2.5 py-2 text-neutral-700 outline-none hover:bg-neutral-50 hover:text-neutral-950 focus-visible:ring-[1.5px] focus-visible:ring-neutral-200 lg:px-3 lg:py-2.5'
+					className='group with-transition hover:text-foreground text-foreground-200 focus-visible:ring-background-200 hover:bg-background-400 flex items-center gap-2 rounded-xl px-2.5 py-2 outline-none focus-visible:ring-[1.5px] lg:px-3 lg:py-2.5'
 					variant={'ghost'}
 					fullWidth
 				>

@@ -14,13 +14,13 @@ export default function TaggedNotesView() {
 		return (
 			<React.Fragment>
 				<div className='space-y-4'>
-					<BackButton to={'/tags'} />
+					<BackButton />
 
 					<h1 className='text-2xl font-bold'>
-						<span className='text-neutral-600'>Notes Tagged:</span> {tag}
+						<span className='text-foreground-100'>Notes Tagged:</span> {tag}
 					</h1>
 
-					<p className='text-sm text-neutral-700'>All notes with the ”{tag}” tag are shown here.</p>
+					<p className='text-foreground-200 text-sm'>All notes with the ”{tag}” tag are shown here.</p>
 
 					<TaggedNotesList tag={tag} />
 				</div>

@@ -41,8 +41,8 @@ export default function EditNoteView() {
 	};
 
 	return (
-		<div className='lg:grid lg:grid-cols-[1fr_200px] xl:grid-cols-[1fr_240px]'>
-			<div className='lg:px-6 lg:py-5'>
+		<div className='h-full lg:grid lg:grid-cols-[1fr_200px] xl:grid-cols-[1fr_240px]'>
+			<div className='h-full lg:px-6 lg:py-5'>
 				<EditNoteForm
 					noteId={noteId}
 					form={editNoteForm}
@@ -55,18 +55,18 @@ export default function EditNoteView() {
 
 								<div className='flex items-center gap-4'>
 									<NoteDeleter noteId={noteId}>
-										<Button type='button' disabled={updateNotePending} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+										<Button type='button' disabled={updateNotePending} variant={'ghost'} className='hover:text-foreground text-foreground-100'>
 											<IconDelete className='size-5' />
 										</Button>
 									</NoteDeleter>
 
 									<NoteArchiver noteId={noteId}>
-										<Button type='button' variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+										<Button type='button' variant={'ghost'} className='hover:text-foreground text-foreground-100'>
 											<IconArchive className='size-[18px]' />
 										</Button>
 									</NoteArchiver>
 
-									<Button type='button' onClick={navigateBack} disabled={updateNotePending} variant={'ghost'} className='text-neutral-600 hover:text-neutral-950'>
+									<Button type='button' onClick={navigateBack} disabled={updateNotePending} variant={'ghost'} className='hover:text-foreground text-foreground-100'>
 										<span className='text-xs md:text-sm'>Cancel</span>
 									</Button>
 
@@ -88,7 +88,7 @@ export default function EditNoteView() {
 								<Button type='submit' disabled={!editNoteForm.formState.isDirty || updateNotePending} size={'lg'}>
 									Save Note
 								</Button>
-								<Button type='button' variant={'secondary'}>
+								<Button type='button' variant={'secondary'} onClick={navigateBack}>
 									Cancel
 								</Button>
 							</div>
@@ -98,7 +98,7 @@ export default function EditNoteView() {
 			</div>
 
 			{isLarge && (
-				<div className='space-y-3 border-l border-l-neutral-200 px-4 py-5'>
+				<div className='border-l-background-200 space-y-3 border-l px-4 py-5'>
 					<NoteArchiver noteId={noteId}>
 						<Button fullWidth variant={'outline'} className='justify-start'>
 							<IconArchive className='size-5' />
